@@ -1,11 +1,7 @@
 <?php
-include('db/credentials.php');
+include('credentials.php');
 $conn = mysqli_connect($host, $username, $password, $database);
-
 if(!$conn) {
-    echo "Error in connection";
-    die();
-}else {
-    echo "Successfully connected to database";
+    echo "Error in connecting to database";
 }
 ?>
