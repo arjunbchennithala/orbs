@@ -11,7 +11,7 @@ else if(!isset($_POST['submit-button'])) {
 </head>
 <body>
     Registration page <br>
-<!---
+
     Customer registration
     <form method="post" onsubmit="return validateCustomerForm()">
         <input type="text" name="name" placeholder="Full name" required> <br>
@@ -39,7 +39,7 @@ else if(!isset($_POST['submit-button'])) {
         <input type="hidden" name="account-type" value="restaurant"> <br>
         <input type="submit" value="Signup" name="submit-button">
     </form>
--->
+
 <?php
 }
 else{

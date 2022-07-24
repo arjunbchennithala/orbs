@@ -12,7 +12,7 @@ if(isset($_SESSION['userid'])) {
 ?>
 <body>
     Login page <br>
-<!--
+
     <form method="post">
         <input type="email" name="username" placeholder="Email id" required>  <br>
         <input type="password" name="password" placeholder="Password" required> <br>
@@ -22,7 +22,7 @@ if(isset($_SESSION['userid'])) {
         </select> <br>
         <input type="submit" name="submit-button" value="Login">  <br>
     </form>
--->
+
 <?php
 }else {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
