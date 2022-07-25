@@ -82,4 +82,5 @@ else{
     }
 }
 include('../lib/footer.php');
+mysqli_close($conn);
 ?>

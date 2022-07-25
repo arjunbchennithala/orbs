@@ -3,20 +3,26 @@ session_start();
 include('db/connect.php');
 if(isset($_SESSION['userid'])) {
     $type = $_GET['type'];
-    $q = mysqli_real_escape_string($conn, $_GET['query']);
+    if(isset($_GET['query']))
+        $q = mysqli_real_escape_string($conn, $_GET['query']);
+    else
+        $q = '';
+
     if($type == 'restaurant') {
-        $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
+        if($q == '')
+            $query = "select id, name, address, location_link, email, phon_no, rating from restaurant";
+        else
+            $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
-            $res = mysqli_fetch_assoc($res);
             $restaurants = array();
-            //$photos = array();
-            foreach($res as $restaurant) {
-                $id = $restaurant['id'];
+            while($restaurant = mysqli_fetch_row($res)) {
+                $id = $restaurant[0];
                 $query = "select value from restaurant_photo where rest_id=$id";
                 $photos = mysqli_query($conn, $query);
-                $photos = mysqli_fetch_assoc($photos);
+                $photos = mysqli_fetch_all($photos);
                 array_push($restaurant, $photos);
+
                 array_push($restaurants, $restaurant);
             }
             echo json_encode($restaurants);
@@ -30,18 +36,17 @@ if(isset($_SESSION['userid'])) {
         if($q == '') {
             $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available'";
         }else{
-        $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available' and LOCATE('$q', name)>0";
+            $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available' and LOCATE('$q', name)>0";
         }
 
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
-            $res = mysqli_fetch_assoc($res);
             $menus = array();
-            foreach($res as $menu) {
-                $menu_id = $menu['id'];
-                $query = "select type, value from menu_photo where rest_id=$rest_id and menu_id=$menu_id";
+            while($menu = mysqli_fetch_row($res)) {
+                $menu_id = $menu[0];
+                $query = "select value from menu_photo where rest_id=$rest_id and menu_id=$menu_id";
                 $result = mysqli_query($conn, $query);
-                $result = mysqli_fetch_assoc($result);
+                $result = mysqli_fetch_all($result);
                 array_push($menu, $result);
                 array_push($menus, $menu);
             }
@@ -55,5 +60,5 @@ if(isset($_SESSION['userid'])) {
 } else {
     http_response_code(401);
 }
-
+msyqli_close($conn);
 ?>

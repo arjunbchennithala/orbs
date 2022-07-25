@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 24, 2022 at 02:38 AM
+-- Generation Time: Jul 26, 2022 at 01:01 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -55,6 +55,14 @@ CREATE TABLE `customer` (
   `created` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `dob`, `email`, `password`, `mobile_number`, `country`, `state`, `profile_photo`, `created`) VALUES
+(8, 'Arjun B', '2001-10-15', 'arjunbchennithala@gmail.com', 'f5549cd8e134c1ff383035710b9f93e4', '8138988771', 'India', 'Kerala', NULL, '2022-07-24'),
+(9, 'Aju', '2001-10-15', 'aju@gmail.com', '0f27cec6b9c62e0929d14f7130c51fba', '123918239', 'India', 'Kerala', NULL, '2022-07-25');
+
 -- --------------------------------------------------------
 
 --
@@ -66,6 +74,7 @@ CREATE TABLE `menu` (
   `rest_id` bigint NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(300) NOT NULL,
+  `price` bigint NOT NULL,
   `state` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -92,7 +101,8 @@ CREATE TABLE `menu_photo` (
 CREATE TABLE `ordered_menu` (
   `id` bigint NOT NULL,
   `order_id` bigint NOT NULL,
-  `menu_id` bigint NOT NULL
+  `menu_id` bigint NOT NULL,
+  `count` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -105,7 +115,10 @@ CREATE TABLE `orders` (
   `id` bigint NOT NULL,
   `cust_id` bigint NOT NULL,
   `rest_id` bigint NOT NULL,
-  `date_and_time` date NOT NULL,
+  `date_and_time` datetime NOT NULL,
+  `total_price` bigint NOT NULL,
+  `ordered_on` datetime NOT NULL,
+  `seats` int NOT NULL,
   `state` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -251,7 +264,7 @@ ALTER TABLE `complaints`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `menu`

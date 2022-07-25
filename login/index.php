@@ -48,4 +48,5 @@ if(isset($_SESSION['userid'])) {
 }
 
 include('../lib/footer.php');
+mysqli_close($conn);
 ?>
