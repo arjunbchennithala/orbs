@@ -3,16 +3,10 @@ session_start();
 include('db/connect.php');
 if(isset($_SESSION['userid'])) {
     $type = $_GET['type'];
-    if(isset($_GET['query']))
-        $q = mysqli_real_escape_string($conn, $_GET['query']);
-    else
-        $q = '';
+    $q = mysqli_real_escape_string($conn, $_GET['query']);
 
     if($type == 'restaurant') {
-        if($q == '')
-            $query = "select id, name, address, location_link, email, phon_no, rating from restaurant";
-        else
-            $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
+        $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
             $restaurants = array();
@@ -32,12 +26,8 @@ if(isset($_SESSION['userid'])) {
     } else if($type == 'menu'){
 
         $rest_id = mysqli_real_escape_string($conn, $_GET['rest_id']);
-        $q = mysqli_real_escape_string($conn, $_GET['query']);
-        if($q == '') {
-            $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available'";
-        }else{
-            $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available' and LOCATE('$q', name)>0";
-        }
+        $query = "select id, name, description, price from menu where rest_id=$rest_id and state='available' and LOCATE('$q', name)>0";
+            
 
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
@@ -54,7 +44,16 @@ if(isset($_SESSION['userid'])) {
         }else{
             http_response_code(204);
         }
-    } else {
+    } else if($type == 'customer'){
+        $query = "select id, name, email, mobile_number, state, created from customer where LOCATE('$q', name) > 0 or LOCATE('$q', email) > 0";
+        $res = mysqli_query($conn, $query);
+        if(mysqli_num_rows($res)>0) {
+            $customers = mysqli_fetch_all($res);
+            echo json_encode($customers);
+        }else{
+            http_response_code(204);
+        }
+    }else {
         http_response_code(400);
     }
 } else {

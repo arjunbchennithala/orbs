@@ -8,11 +8,18 @@ if(isset($_SESSION['userid'])) {
         if($action == 'place'){
             $order = file_get_contents('php://input'); 
             $order = json_decode($order, true); 
-            $user_id = $_SESSION['userid'];
-            $rest_id = $order->$details->$rest_id;
-            $time_slot = $order->$details->$time;
-            $no_of_seats = $order->$details->$seats;
-            $items = $order->$items;
+            //$user_id = $_SESSION['userid'];
+            $rest_id = mysqli_real_escape_string($conn, $order->details->rest_id);
+            $time_slot = mysqli_real_escape_string($conn, $order->details->time);
+            $no_of_seats = mysqli_real_escape_string($conn, $order->details->seats);
+            $items = mysqli_real_escape_string($conn, $order->items);
+/*
+            $rest_id = $_POST['rest_id'];
+            $time_slot = $_POST['time'];
+            $no_of_seats = $_POST['seats'];
+*/
+            
+
             $cust_id = $_SESSION['userid'];
             $time = date('y-m-d h:i:s');
             echo $time;
@@ -61,18 +68,21 @@ if(isset($_SESSION['userid'])) {
             $user_id = $_SESSION['userid'];
             $query = "select * from orders where cust_id=$user_id order by id desc";
             $res = mysqli_query($conn, $query);
-            $orders = array();
-            while($order = mysqli_fetch_row($res)) {
-                $rest_id = $order[2];
-                $query = "select name from restaurant where id=$rest_id";
-                $result = mysqli_query($conn, $query);
-                $result = mysqli_fetch_row($result);
-                array_push($order, $result[0]);
-                array_push($orders, $order);
+            if(mysqli_num_rows($res)>0) {
+                $orders = array();
+                while($order = mysqli_fetch_row($res)) {
+                    $rest_id = $order[2];
+                    $query = "select name from restaurant where id=$rest_id";
+                    $result = mysqli_query($conn, $query);
+                    $result = mysqli_fetch_row($result);
+                    array_push($order, $result[0]);
+                    array_push($orders, $order);
+                }
+                echo json_encode($orders);
             }
-            echo json_encode($orders);
+            
         }else if($action == 'cancel') {
-            $order_id = $_GET['order_id'];
+            $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
             $query = "select status from orders where id=$order_id";
             $res = mysqli_query($conn, $query);
             $status = mysqli_fetch_row($res);
@@ -88,7 +98,7 @@ if(isset($_SESSION['userid'])) {
         }
         
     }else if($_SESSION['account-type'] == 'restaurant') {
-        $order_id = $_POST['order_id'];
+        $order_id = mysqli_real_escape_string($conn, $_POST['order_id']);
         if($_POST['order_action'] == 'accept') {
             $query = "update orders set status='accepted' where id=$order_id";
             if(mysqli_query($conn, $query)) {
