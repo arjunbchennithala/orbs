@@ -10,8 +10,45 @@ else if(!isset($_POST['submit-button'])) {
     <title>Register</title>
 </head>
 <body>
-    Registration page <br>
-
+<div class="back">
+        <div class="div-center">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#customer">Customer</a></li>
+                <li><a data-toggle="tab" href="#restaurant">Restaurant</a></li>
+            </ul>
+            <div class="tab-content ">
+            <div class="content tab-pane fade in active">
+                <h3>Customer registration</h3>
+                <hr>
+                <form method="post">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="username" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div> <br>
+                    <div class="form-group">
+                        <label for="selection">Select type of the account</label>
+                        <select class="form-select" id="selection" name="account-type" aria-label="Default select example">
+                            <option value="customer">customer</option>
+                            <option value="restaurant">restaurant</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" name="submit-button">Login</button>
+                    <hr>
+                    <a href="../register">Signup</a>
+                    &nbsp;&nbsp;
+                    <a href="../reset">Reset Password</a>
+                </form>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+<!--
     Customer registration
     <form method="post" onsubmit="return validateCustomerForm()">
         <input type="text" name="name" placeholder="Full name" required> <br>
@@ -39,6 +76,7 @@ else if(!isset($_POST['submit-button'])) {
         <input type="hidden" name="account-type" value="restaurant"> <br>
         <input type="submit" value="Signup" name="submit-button">
     </form>
+-->
 
 <?php
 }

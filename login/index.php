@@ -11,18 +11,37 @@ if(isset($_SESSION['userid'])) {
 }else if(!isset($_POST['submit-button'])) {
 ?>
 <body>
-    Login page <br>
-
-    <form method="post">
-        <input type="email" name="username" placeholder="Email id" required>  <br>
-        <input type="password" name="password" placeholder="Password" required> <br>
-        <select name="account-type" required>
-            <option value="customer">customer</option>
-            <option value="restaurant">restaurant</option>
-        </select> <br>
-        <input type="submit" name="submit-button" value="Login">  <br>
-    </form>
-
+    <div class="back">
+        <div class="div-center">
+            <div class="content">
+                <h3>Login</h3>
+                <hr>
+                <form method="post">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="username" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div> <br>
+                    <div class="form-group">
+                        <label for="selection">Select type of the account</label>
+                        <select class="form-select" id="selection" name="account-type" aria-label="Default select example">
+                            <option value="customer">customer</option>
+                            <option value="restaurant">restaurant</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" name="submit-button">Login</button>
+                    <hr>
+                    <a href="../register">Signup</a>
+                    &nbsp;&nbsp;
+                    <a href="../reset">Reset Password</a>
+                </form>
+            </div>
+        </div>
+    </div>
 <?php
 }else {
     $username = mysqli_real_escape_string($conn, $_POST['username']);

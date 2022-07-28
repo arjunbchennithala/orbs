@@ -7,7 +7,7 @@ if(isset($_SESSION['userid'])) {
     else if($_SESSION['account-type'] == 'customer')
         include('views/customer.php');
 }else{
-    include('views/welcome.php');
+    header("Location: login");
 }
 include('lib/footer.php');
 ?>
