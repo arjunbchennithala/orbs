@@ -11,7 +11,25 @@ if(isset($_SESSION['userid'])) {
 }else if(!isset($_POST['submit-button'])) {
 ?>
 <body>
-    <div class="back">
+    <nav class="navbar navbar-expand-sm bg-warning navbar-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">ORBS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../register" class="nav-link">Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--<div class="back">-->
         <div class="div-center">
             <div class="content">
                 <h3>Login</h3>
@@ -41,7 +59,7 @@ if(isset($_SESSION['userid'])) {
                 </form>
             </div>
         </div>
-    </div>
+    <!--</div> -->
 <?php
 }else {
     $username = mysqli_real_escape_string($conn, $_POST['username']);

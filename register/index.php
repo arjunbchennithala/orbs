@@ -10,44 +10,124 @@ else if(!isset($_POST['submit-button'])) {
     <title>Register</title>
 </head>
 <body>
-<div class="back">
-        <div class="div-center">
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#customer">Customer</a></li>
-                <li><a data-toggle="tab" href="#restaurant">Restaurant</a></li>
-            </ul>
-            <div class="tab-content ">
-            <div class="content tab-pane fade in active">
+<div class="container-fluid" style="padding:0%">
+<nav class="navbar navbar-expand-sm bg-warning navbar-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">ORBS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="../login" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="div-center" id="account-selection" style="height: 100px;">
+        <label for="selection">Select type of the account</label>
+        <select class="form-select" id="selection" name="account-type" onchange="account_change()">
+            <option value="">--Select type of account to continue--</option>               
+            <option value="customer">customer</option>
+            <option value="restaurant">restaurant</option>
+        </select>
+    </div>
+        <div class="div-center" id="customer" style="display : none">
+            <div class="content">
                 <h3>Customer registration</h3>
                 <hr>
-                <form method="post">
+                <form method="post" onsubmit="return validateCustomerForm()">
+                    <div class ="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" class="form-control" id="text" name="name" placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Dob</label>
+                        <input type="date" class="form-control" id="dob" name="dob">
+                    </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="username" placeholder="Email">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Create Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                    </div> <br>
+                    </div> 
+                    
                     <div class="form-group">
-                        <label for="selection">Select type of the account</label>
-                        <select class="form-select" id="selection" name="account-type" aria-label="Default select example">
-                            <option value="customer">customer</option>
-                            <option value="restaurant">restaurant</option>
-                        </select>
+                        <label for="password2">Repeat Password</label>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile_number" placeholder="Mob No">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" class="form-control" id="country" name="country" placeholder="Country">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" id="state" name="state" placeholder="State">
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary" name="submit-button">Login</button>
+                    <input type="hidden" name="account-type" value="customer">
+                    <button type="submit" class="btn btn-primary" name="submit-button">Register</button>
                     <hr>
-                    <a href="../register">Signup</a>
-                    &nbsp;&nbsp;
-                    <a href="../reset">Reset Password</a>
                 </form>
             </div>
-            </div>
-            
         </div>
-    </div>
+
+        <div class="div-center" id="restaurant" style="display : none">
+            <div class="content">
+                <h3>Restaurant registration</h3>
+                <hr>
+                <form method="post" onsubmit="return validateRestaurantForm()">
+                    <div class ="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="text" name="name" placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Create Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div> 
+                    
+                    <div class="form-group">
+                        <label for="password2">Repeat Password</label>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="text" class="form-control" id="mobile" name="phone_no" placeholder="Mob No">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <label for="location_link">Location link</label>
+                        <input type="text" class="form-control" id="location_link" name="location_link" placeholder="Location link">
+                    </div>
+                    <br>
+                    <input type="hidden" name="account-type" value="restaurant">
+                    <button type="submit" class="btn btn-primary" name="submit-button">Register</button>
+                    <hr>
+                </form>
+            </div>
+        </div>
+</div>
+    
+
 <!--
     Customer registration
     <form method="post" onsubmit="return validateCustomerForm()">
