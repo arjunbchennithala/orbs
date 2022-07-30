@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('db/connect.php');
+header("Content-Type: application/json");
 if(isset($_SESSION['userid'])) {
     if($_SESSION['account-type'] == 'restaurant') {
         $type = $_GET['type'];
@@ -47,6 +48,24 @@ if(isset($_SESSION['userid'])) {
                 $query = "update menu set price=$price where id=$menu_id";
                 mysqli_query($conn, $query);
             }
+        }
+    }else if($_SESSION['account-type'] == 'customer') {
+        $rest_id = mysqli_real_escape_string($conn, $_GET['restid']);
+        $query = "select * from menu where rest_id=$rest_id";
+        $res = mysqli_query($conn, $query);
+        if(mysqli_num_rows($res)>0) {
+            $menus = array();
+            $res = mysqli_fetch_all($res);
+            foreach($res as $menu){
+                $query = "select * from menu_photo where menu_id=$menu[0] and state='available'";
+                $result = mysqli_query($conn, $query);
+                $result = mysqli_fetch_all($result);
+                array_push($menu, $result);
+                array_push($menus, $menu);
+            }
+            echo json_encode($menus);
+        }else{
+            http_response_code(204);
         }
     }
 }else{

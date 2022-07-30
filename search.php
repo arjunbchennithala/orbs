@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('db/connect.php');
+header("Content-Type: application/json");
 if(isset($_SESSION['userid'])) {
     $type = $_GET['type'];
     $q = mysqli_real_escape_string($conn, $_GET['query']);
@@ -59,5 +60,5 @@ if(isset($_SESSION['userid'])) {
 } else {
     http_response_code(401);
 }
-msyqli_close($conn);
+mysqli_close($conn);
 ?>

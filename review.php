@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('db/connect.php');
+header("Content-Type: application/json");
 if(isset($_SESSION['userid'])) {
     if($_GET['type'] == 'post') {
         if($_SESSION['account-type'] == 'customer'){

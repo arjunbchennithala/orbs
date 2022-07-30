@@ -5,13 +5,15 @@ if(isset($_SESSION['userid'])){
     header("Location: /orbs");
 }
 else if(!isset($_POST['submit-button'])) {
+
 ?>
+    <link rel="stylesheet" href="../stylesheet/main.css">
     <script src="/orbs/script/registration.js"></script>
     <title>Register</title>
 </head>
 <body>
 <div class="container-fluid" style="padding:0%">
-<nav class="navbar navbar-expand-sm bg-warning navbar-light">
+<nav class="navbar navbar-expand-sm sticky-top bg-warning navbar-light">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">ORBS</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">

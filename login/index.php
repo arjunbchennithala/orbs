@@ -3,6 +3,8 @@ session_start();
 include('../lib/header.php');
 include('../db/connect.php');
 ?>
+    <link rel="stylesheet" href="../stylesheet/main.css">
+    <script src="../script/login.js"></script>
     <title>Login</title>
 </head>
 <?php
@@ -34,7 +36,7 @@ if(isset($_SESSION['userid'])) {
             <div class="content">
                 <h3>Login</h3>
                 <hr>
-                <form method="post">
+                <form method="post" onsubmit="return validateForm()">
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email" name="username" placeholder="Email">

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('db/connect.php');
+header("Content-Type: application/json");
 if(isset($_SESSION['userid'])){
     if($_SESSION['account-type'] == 'customer') {
         $user_id = $_SESSION['userid'];

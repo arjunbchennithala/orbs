@@ -1,8 +1,9 @@
 <?php
 session_start();
 include('db/connect.php');
-
+header("Content-Type: application/json");
 if(isset($_SESSION['userid'])) {
+    $userid = $_SESSION['userid'];
     if($_SESSION['account-type'] == "customer") {
         $action = $_GET['action'];
         if($action == 'place'){
@@ -79,6 +80,8 @@ if(isset($_SESSION['userid'])) {
                     array_push($orders, $order);
                 }
                 echo json_encode($orders);
+            }else{
+                http_response_code(204);
             }
             
         }else if($action == 'cancel') {
@@ -98,15 +101,16 @@ if(isset($_SESSION['userid'])) {
         }
         
     }else if($_SESSION['account-type'] == 'restaurant') {
-        $order_id = mysqli_real_escape_string($conn, $_POST['order_id']);
-        if($_POST['order_action'] == 'accept') {
+	if(isset($_GET['order_id'])) {
+        $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
+        if($_GET['action'] == 'accept') {
             $query = "update orders set status='accepted' where id=$order_id";
             if(mysqli_query($conn, $query)) {
                 http_response_code(202);
             }else{
                 http_response_code(500);
             }
-        }else if($_POST['order_action'] == 'reject') {
+        }else if($_GET['action'] == 'reject') {
             $query = "update orders set status='rejected' where id=$order_id";
             if(mysqli_query($conn, $query)) {
                 http_response_code(202);
@@ -114,6 +118,17 @@ if(isset($_SESSION['userid'])) {
                 http_response_code(500);
             }
         }
+	}else{
+           $query = "select * from orders where rest_id=$userid";
+	   $res = mysqli_query($conn, $query);
+	   if(mysqli_num_rows($res)>0) {
+		$res = mysqli_fetch_all($res);
+		echo json_encode($res);
+	   }else{
+		http_response_code(204);
+	   }
+	
+	}
     }
 } else {
     http_response_code(401);
