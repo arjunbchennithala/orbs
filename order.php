@@ -9,21 +9,16 @@ if(isset($_SESSION['userid'])) {
         if($action == 'place'){
             $order = file_get_contents('php://input'); 
             $order = json_decode($order, true); 
-            //$user_id = $_SESSION['userid'];
-            $rest_id = mysqli_real_escape_string($conn, $order->details->rest_id);
-            $time_slot = mysqli_real_escape_string($conn, $order->details->time);
-            $no_of_seats = mysqli_real_escape_string($conn, $order->details->seats);
-            $items = mysqli_real_escape_string($conn, $order->items);
-/*
-            $rest_id = $_POST['rest_id'];
-            $time_slot = $_POST['time'];
-            $no_of_seats = $_POST['seats'];
-*/
+            
+            $rest_id = mysqli_real_escape_string($conn, $order['details']['rest_id']);
+            $time_slot = mysqli_real_escape_string($conn, $order['details']['time']);
+            $no_of_seats = mysqli_real_escape_string($conn, $order['details']['seats']);
+            $items = $order['item'];
             
 
             $cust_id = $_SESSION['userid'];
             $time = date('y-m-d h:i:s');
-            echo $time;
+
             $query = "insert into orders(cust_id, rest_id, date_and_time, total_price, ordered_on, seats, state)";
             $query .= " values($cust_id, $rest_id, '$time_slot', 0, '$time', $no_of_seats, 'processing')";
             if(mysqli_query($conn, $query)) {
@@ -51,16 +46,18 @@ if(isset($_SESSION['userid'])) {
                         $query = "select price from menu where id=$menu_id";
                         $res = mysqli_query($conn, $query);
                         $res = mysqli_fetch_assoc($res);
-                        $price += $res['price'];
+                        $price += $res['price'] * $menu_count;
                     }
                     $query = "update orders set total_price=$price where id=$order_id";
                     if(mysqli_query($conn, $query)) {
-                        $query = "update orders set status='requested' where id=$order_id";
-                        mysqli_query($conn, $query);
-                        http_response_code(201);
+                        $query = "update orders set state='requested' where id=$order_id";
+                        if(mysqli_query($conn, $query))
+                            http_response_code(201);
+                        else
+                            http_response_code(403);
                     }
                 }else{
-                    $query = "update orders set status='failed' where id=$order_id";
+                    $query = "update orders set state='failed' where id=$order_id";
                     mysqli_query($conn, $query);
                     http_response_code(500);
                 }
@@ -86,49 +83,71 @@ if(isset($_SESSION['userid'])) {
             
         }else if($action == 'cancel') {
             $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
-            $query = "select status from orders where id=$order_id";
+            $query = "select state from orders where id=$order_id";
             $res = mysqli_query($conn, $query);
             $status = mysqli_fetch_row($res);
             $status = $status[0];
             if($status == 'requested') {
-                $query = "update orders set status='cancelled' where id=$order_id";
+                $query = "update orders set state='cancelled' where id=$order_id";
+                if(mysqli_query($conn, $query)) {
+                    http_response_code(202);
+                }else{
+                    http_response_code(500);
+                }
+            }else{
+                http_response_code(403);
+            }
+        }else if($action == 'hide') {
+            $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
+            $query = "update orders set state='hidden' where id=$order_id";
+            if(mysqli_query($conn, $query)){
+                http_response_code(201);
+            }else{
+                http_response_code(500);
+            }
+        }
+        
+    }else if($_SESSION['account-type'] == 'restaurant') {
+        if(isset($_GET['order_id'])) {
+            $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
+            if($_GET['action'] == 'accept') {
+                $query = "update orders set state='accepted' where id=$order_id";
+                if(mysqli_query($conn, $query)) {
+                    http_response_code(202);
+                }else{
+                    http_response_code(500);
+                }
+            }else if($_GET['action'] == 'reject') {
+                $query = "update orders set state='rejected' where id=$order_id";
+                if(mysqli_query($conn, $query)) {
+                    http_response_code(202);
+                }else{
+                    http_response_code(500);
+                }
+            }else if($_GET['action'] == 'confirm') {
+                $query = "update orders set state='confirmed' where id=$order_id";
                 if(mysqli_query($conn, $query)) {
                     http_response_code(202);
                 }else{
                     http_response_code(500);
                 }
             }
-        }
-        
-    }else if($_SESSION['account-type'] == 'restaurant') {
-	if(isset($_GET['order_id'])) {
-        $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
-        if($_GET['action'] == 'accept') {
-            $query = "update orders set status='accepted' where id=$order_id";
-            if(mysqli_query($conn, $query)) {
-                http_response_code(202);
-            }else{
-                http_response_code(500);
+        }else{
+            if(!isset($_GET['filter']))
+                $query = "select * from orders where rest_id=$userid";
+            else{
+                $filter = mysqli_real_escape_string($conn, $_GET['filter']);
+                $query = "select * from orders where rest_id=$userid and state='$filter'";
             }
-        }else if($_GET['action'] == 'reject') {
-            $query = "update orders set status='rejected' where id=$order_id";
-            if(mysqli_query($conn, $query)) {
-                http_response_code(202);
+            
+            $res = mysqli_query($conn, $query);
+            if(mysqli_num_rows($res)>0) {
+                $res = mysqli_fetch_all($res);
+                echo json_encode($res);
             }else{
-                http_response_code(500);
+                http_response_code(204);
             }
         }
-	}else{
-           $query = "select * from orders where rest_id=$userid";
-	   $res = mysqli_query($conn, $query);
-	   if(mysqli_num_rows($res)>0) {
-		$res = mysqli_fetch_all($res);
-		echo json_encode($res);
-	   }else{
-		http_response_code(204);
-	   }
-	
-	}
     }
 } else {
     http_response_code(401);

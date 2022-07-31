@@ -51,16 +51,18 @@ if(isset($_SESSION['userid'])) {
         }
     }else if($_SESSION['account-type'] == 'customer') {
         $rest_id = mysqli_real_escape_string($conn, $_GET['restid']);
-        $query = "select * from menu where rest_id=$rest_id";
+        $query = "select * from menu where rest_id=$rest_id and state='available'";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
             $menus = array();
             $res = mysqli_fetch_all($res);
             foreach($res as $menu){
-                $query = "select * from menu_photo where menu_id=$menu[0] and state='available'";
+                $query = "select * from menu_photo where menu_id=$menu[0]";
                 $result = mysqli_query($conn, $query);
-                $result = mysqli_fetch_all($result);
-                array_push($menu, $result);
+                if(mysqli_num_rows($result)>0) {
+                    $result = mysqli_fetch_all($result);
+                    array_push($menu, $result);
+                }
                 array_push($menus, $menu);
             }
             echo json_encode($menus);

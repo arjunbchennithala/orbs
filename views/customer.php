@@ -44,13 +44,18 @@
 
 
 
-<div class="content-pane container-fluid" id="orders">
+<div class="content-pane" id="orders">
   <h3>Orders</h3>
   <hr>
   <div id="content"></div>
 </div>
 
 <div class="content-pane" id="restaurant" style="display :none;">
+<a class="btn btn-dark" onclick="back()" href="#">Back</a>
+<h3>Menu</h3>
+<hr>
+<table class="table table-hover" id="menu-container">
+</table>
 </div>
 
 <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
