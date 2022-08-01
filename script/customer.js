@@ -141,9 +141,12 @@ function placeOrder(rest_id) {
 			},
 			"item" : prereq
 		};
-		$.post('order.php?action=place', JSON.stringify(req), function(data, status){
-			document.write(data + status);
-		});
+		$('#spinner').show();
+		$.ajax({url : "order.php?action=place", data: JSON.stringify(req),type:"post", 
+		complete:function(){
+			$('#spinner').hide();
+			alert("Successfully placed");
+		}});
 	}
 }
 
@@ -176,24 +179,19 @@ function payOrder(order_id) {
 }
 
 function cancelOrder(order_id) {
-	//$('#spinner').show();
-	$.get("order.php?action=cancel&order_id="+order_id, function(data, status) {
-		//$('#spinner').hide();
-		document.write(data + status);
-		if(status == "created") {
-			console.log("Canceled");
-		}else{
-			console.log("failed to cancel");
-		}
-		initiate();
-		console.log(data + status);
-	});
+	$('#spinner').show();
+	if(confirm("Cancelling Order id : "+order_id+"\nAre you sure?")){
+		$.ajax({url : "order.php?action=cancel&order_id="+order_id, complete:function(){
+			$('#spinner').hide();
+			initiate();
+		}});
+	}
 }
 
 function hideOrder(order_id) {
-	$.get("order.php?action=hide&order_id="+order_id, function(data, status){
-		document.write(data + status);
-		initiate();
-		console.log(data+status);
-	});
+	$('#spinner').show();
+	$.ajax({url : "order.php?action=hide&order_id="+order_id, complete:function(){
+		$('#spinner').hide();
+        initiate();
+    }});
 }

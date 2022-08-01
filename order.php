@@ -64,7 +64,12 @@ if(isset($_SESSION['userid'])) {
             }
         }else if($action == 'fetch') {
             $user_id = $_SESSION['userid'];
-            $query = "select * from orders where cust_id=$user_id order by id desc";
+            if(isset($_GET['filter'])){
+                $filter = mysqli_real_escape_string($conn, $_GET['filter']);
+                $query = "select * from orders where cust_id=$user_id and state='$filter' order by id desc";
+            }else{
+                $query = "select * from orders where cust_id=$user_id and state!='hidden' order by id desc";
+            }
             $res = mysqli_query($conn, $query);
             if(mysqli_num_rows($res)>0) {
                 $orders = array();
@@ -114,6 +119,8 @@ if(isset($_SESSION['userid'])) {
                 $query = "update orders set state='accepted' where id=$order_id";
                 if(mysqli_query($conn, $query)) {
                     http_response_code(202);
+                    //header("Content-Type: text/html");
+                    //echo "Successfully accepted";
                 }else{
                     http_response_code(500);
                 }
@@ -121,6 +128,8 @@ if(isset($_SESSION['userid'])) {
                 $query = "update orders set state='rejected' where id=$order_id";
                 if(mysqli_query($conn, $query)) {
                     http_response_code(202);
+                    //header("Content-Type: text/html");
+                    //echo "Successfully rejected";
                 }else{
                     http_response_code(500);
                 }
