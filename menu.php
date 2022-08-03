@@ -17,6 +17,20 @@ if(isset($_SESSION['userid'])) {
             }else{
                 http_response_code(500);
             }
+        }else if($type == 'fetch'){
+            $rest_id = $_SESSION['userid'];
+            $query = "select * from menu where rest_id=$rest_id";
+            $res = mysqli_query($conn, $query);
+            $res = mysqli_fetch_all($res);
+            $menus = array();
+            foreach($res as $menu) {
+                $query = "select type, value from menu_photo where rest_id=$rest_id and menu_id=$menu[0]";
+                $menu_photo = mysqli_query($conn, $query);
+                $menu_photo = mysqli_fetch_all($menu_photo);
+                array_push($menu, $menu_photo);
+                array_push($menus, $menu);
+            }
+            echo json_encode($menus);
         }else if($type == 'hide') {
             $menu_id = mysqli_real_escape_string($conn, $_GET['menuid']);
             $query = "update menu set state='unavailable' where id=$menu_id";
@@ -48,6 +62,8 @@ if(isset($_SESSION['userid'])) {
                 $query = "update menu set price=$price where id=$menu_id";
                 mysqli_query($conn, $query);
             }
+        }else if($type == 'add'){
+            var_dump($_POST);
         }
     }else if($_SESSION['account-type'] == 'customer') {
         $rest_id = mysqli_real_escape_string($conn, $_GET['restid']);

@@ -37,33 +37,33 @@
       </div>
   </div>
 </nav>
-
-<div class="content-pane container-fluid" id="search-result" style="display:none;">
-</div>
-
-
+<div id="container">
+  <div class="content-pane container-fluid" id="search-result" style="display:none;">
+  </div>
 
 
-<div class="content-pane" id="orders">
-  <h3>Orders</h3>
+
+  <div id="container">
+  <div class="content-pane" id="orders">
+    <h3>Orders</h3>
+    <hr>
+    <div id="content"></div>
+  </div>
+
+  <div class="content-pane" id="restaurant" style="display :none;">
+  <a class="btn btn-dark" onclick="back()" href="#">Back</a>
+  <h3>Menu</h3>
   <hr>
-  <div id="content"></div>
-</div>
+  <table class="table table-hover" id="menu-container">
+  </table>
+  </div>
 
-<div class="content-pane" id="restaurant" style="display :none;">
-<a class="btn btn-dark" onclick="back()" href="#">Back</a>
-<h3>Menu</h3>
-<hr>
-<table class="table table-hover" id="menu-container">
-</table>
-</div>
-
-<div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
-  <div class="spinner-border" role="status" id="spinner">
-<!--    <span class="visually-hidden">Loading...</span>-->
+  <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
+    <div class="spinner-border" role="status" id="spinner">
+  <!--    <span class="visually-hidden">Loading...</span>-->
+    </div>
   </div>
 </div>
-
 <script>
   $(document).ready(function(){
     initiate();
