@@ -70,6 +70,8 @@ if(isset($_SESSION['userid'])) {
 
         $count = array($restaurant, $customer, $order);
         echo json_encode($count);
+    }else if($type == 'menu') {
+        
     }
 }else{
     http_response_code(401);

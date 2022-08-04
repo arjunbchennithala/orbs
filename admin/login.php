@@ -3,8 +3,8 @@ if(isset($_SESSION['account-type'])) {
     if($_SESSION['account-type']=='admin')
         include('dashboard.php');
     else {
-?>
-
+echo "Hello World";
+/*
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +17,8 @@ if(isset($_SESSION['account-type'])) {
     
 </body>
 </html>
+*/
 
-<?php
     }
 }
 ?>

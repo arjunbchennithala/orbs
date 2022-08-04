@@ -37,13 +37,13 @@
       </div>
   </div>
 </nav>
-<div id="container">
+<!--<div id="container">-->
   <div class="content-pane container-fluid" id="search-result" style="display:none;">
   </div>
 
 
 
-  <div id="container">
+  <!--<div id="container">-->
   <div class="content-pane" id="orders">
     <h3>Orders</h3>
     <hr>
@@ -63,7 +63,7 @@
   <!--    <span class="visually-hidden">Loading...</span>-->
     </div>
   </div>
-</div>
+<!--</div>-->
 <script>
   $(document).ready(function(){
     initiate();

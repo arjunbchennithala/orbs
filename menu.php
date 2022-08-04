@@ -19,7 +19,12 @@ if(isset($_SESSION['userid'])) {
             }
         }else if($type == 'fetch'){
             $rest_id = $_SESSION['userid'];
-            $query = "select * from menu where rest_id=$rest_id";
+            if(isset($_GET['menu_id'])) {
+                $menu_id = mysqli_real_escape_string($conn, $_GET['menu_id']);
+                $query = "select * from menu where id=$menu_id";
+            }else{
+                $query = "select * from menu where rest_id=$rest_id";
+            }
             $res = mysqli_query($conn, $query);
             $res = mysqli_fetch_all($res);
             $menus = array();
@@ -46,24 +51,40 @@ if(isset($_SESSION['userid'])) {
             else
                 http_response_code(500);
         }else if($type == 'edit') {
+            $newValue = file_get_contents('php://input'); 
+            $newValue = json_decode($newValue, true); 
+
             $menu_id = mysqli_real_escape_string($conn, $_GET['menuid']);
-            if(isset($_POST['name'])) {
-                $name = mysqli_real_escape_string($conn, $_POST['name']);
+            if($newValue['name'] != "") {
+                $name = mysqli_real_escape_string($conn, $newValue['name']);
                 $query = "update menu set name='$name' where id=$menu_id";
                 mysqli_query($conn, $query);
             }
-            if(isset($_POST['description'])) {
-                $description = mysqli_real_escape_string($conn, $_POST['description']);
+            if($newValue['description'] != "") {
+                $description = mysqli_real_escape_string($conn, $newValue['description']);
                 $query = "update menu set description='$description' where id=$menu_id";
                 mysqli_query($conn, $query);
             }
-            if(isset($_POST['price'])) {
-                $price = mysqli_real_escape_string($conn, $_POST['price']);
+            if($newValue['price'] != "") {
+                $price = mysqli_real_escape_string($conn, $newValue['price']);
                 $query = "update menu set price=$price where id=$menu_id";
                 mysqli_query($conn, $query);
             }
         }else if($type == 'add'){
-            var_dump($_POST);
+            $menu = file_get_contents("php://input");
+            $menu = json_decode($menu);
+            $name = $menu->name;
+            $description = $menu->description;
+            $price = $menu->price;
+            $rest_id = $_SESSION['userid'];
+            $query = "insert into menu(rest_id, name, description, price, state)";
+            $query .= " values($rest_id, '$name', '$description', $price, 'available')";
+            if(mysqli_query($conn, $query)) {
+                http_response_code(201);
+            }else{
+                http_response_code(500);
+            }
+
         }
     }else if($_SESSION['account-type'] == 'customer') {
         $rest_id = mysqli_real_escape_string($conn, $_GET['restid']);

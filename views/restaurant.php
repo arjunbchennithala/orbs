@@ -74,6 +74,30 @@
                 </form>
             </div>
         </div>
+    <div class="div-center" id="menuEdit" style="display: none">
+    <div class="content">
+                <h3>Edit Menu</h3>
+                <hr>
+                <form onsubmit="return editMenu()">
+                    <div class="form-group">
+                        <label for="editname">Name</label>
+                        <input type="text" class="form-control" id="editname" name="name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="editdescription">Description</label>
+                        <input type="textarea" class="form-control" id="editdescription" name="description" placeholder="Description">
+                    </div> <br>
+                    <div class="form-group">
+                        Price in Rs:
+                        <input type="number" min="0" class="form-control" id="editprice" name="price">
+                    </div>
+                    <br>
+                    <input type="hidden" id="men_id" value="">
+                    <button type="submit" class="btn btn-warning" name="submit-button">Edit</button>
+                    <hr>
+                </form>
+            </div>
+    </div>
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
     <div class="spinner-border" role="status" id="spinner" style="display: none;">
