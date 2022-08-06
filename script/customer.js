@@ -6,20 +6,16 @@ function initiate() {
 		if(status == "nocontent") {
 			$('#content').append("<p>No Orders yet</p>");
 		}else {
-			$('#content').append("<table id='tb' class='table table-striped'></table>");
-			$('#tb').append("<thead><tr><th>Sl.no</th><th>Restaurant</th><th>Order for</th><th>Price</th><th>Seats</th><th>Status</th><th>Ordered on</th><th>Action</th></tr></thead>");
+			$('#content').append("<table id='tb' class='table table-hover'></table>");
+			$('#tb').append("<thead><tr><th>#</th><th>Order ID</th><th>Restaurant</th><th>Order for</th><th>Price</th><th>Seats</th><th>Status</th><th>Ordered on</th><th>Action</th></tr></thead>");
 			$('#tb').append("<tbody id='table-bod'></tbody>");
-			var index=1;
 			for(var i=0; i<data.length; i++) {
 				if(data[i][7] == 'requested')
-					$('#table-bod').append("<tr><td>"+index+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-danger' onclick='cancelOrder("+data[i][0]+")'>Cancel</a></td></tr>");
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-danger' onclick='cancelOrder("+data[i][0]+")'>Cancel</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
 				else if(data[i][7] == 'accepted')
-					$('#table-bod').append("<tr><td>"+index+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-success' onclick='payOrder("+data[i][0]+")'>Pay</a></td></tr>");
-				else if(data[i][7] != 'hidden')
-					$('#table-bod').append("<tr><td>"+index+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-warning' onclick='hideOrder("+data[i][0]+")'>Hide</a></td></tr>");
-				if(data[i][7] == 'hidden')
-					continue;
-				index++;
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-success' onclick='payOrder("+data[i][0]+")'>Pay</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
+				else
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-warning' onclick='hideOrder("+data[i][0]+")'>Hide</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
 			}
 		}
     });
@@ -28,6 +24,7 @@ function initiate() {
 function homeClicked() {
 	if($('#search-result').children().length>0) {
 		$('#orders').hide();
+		$('#details').hide();
 		$('#search-result').show();
 	}
 	$('#restaurant').hide();
@@ -35,6 +32,7 @@ function homeClicked() {
 
 function ordersClicked() {
 	$('#search-result').hide();
+	$('#details').hide();
 	$('#restaurant').hide();
 	initiate();
 	$('#orders').show();
@@ -45,6 +43,7 @@ function search() {
 	if(text != '' && text != ' ') {
 		$('#orders').hide();
 		$('#restaurant').hide();
+		$('#details').hide();
 		$('#spinner').show();
 		$.get("search.php?type=restaurant&query="+text, function(data, status){
 			$('#spinner').hide();
@@ -68,6 +67,7 @@ function search() {
 function checkRestaurant(rest_id) {
 	$('#spinner').show();
 	$('#orders').hide();
+	$('#details').hide();
 	$('#search-result').hide();
 	$.get("menu.php?restid="+rest_id, function(data, status){
 		$('#spinner').hide();
@@ -92,7 +92,16 @@ function checkRestaurant(rest_id) {
 
 function back() {
 	$('#restaurant').hide();
+	$('#details').hide();
+	$('#back').hide();
 	$('#search-result').show();
+}
+
+function backfromdetails() {
+	$('#restaurant').hide();
+	$('#details').hide();
+	$('#back').hide();
+	$('#orders').show();
 }
 
 function placeOrder(rest_id) {
@@ -145,7 +154,9 @@ function placeOrder(rest_id) {
 		$.ajax({url : "order.php?action=place", data: JSON.stringify(req),type:"post", 
 		complete:function(){
 			$('#spinner').hide();
-			alert("Successfully placed");
+			alert("Successfuly placed");
+
+			back();
 		}});
 	}
 }
@@ -194,4 +205,18 @@ function hideOrder(order_id) {
 		$('#spinner').hide();
         initiate();
     }});
+}
+function orderDetails(order_id) {
+	$('#spinner').show();
+	$.ajax({url:"order.php?action=orderedmenu&order_id="+order_id, complete:function(data, status){
+		$('#spinner').hide();
+		$('#orders').hide();
+		$('#details').show();
+		$('#back').show();
+		$('#details').empty();
+		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
+		for(var i=0; i<data.responseJSON.length; i++){
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][3]+"</td><td>"+data.responseJSON[i][0][6]+"</td></tr>")
+		}
+	}});
 }

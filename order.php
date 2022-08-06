@@ -110,6 +110,21 @@ if(isset($_SESSION['userid'])) {
             }else{
                 http_response_code(500);
             }
+        }else if($action == 'orderedmenu') {
+            $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
+            $query = "select * from ordered_menu where order_id=$order_id";
+            $menus = mysqli_query($conn, $query);
+            $menus = mysqli_fetch_all($menus);
+            $men = array();
+            foreach($menus as $menu) {
+                $menu_id = $menu[2];
+                $query = "select * from menu where id=$menu_id";
+                $item = mysqli_query($conn, $query);
+                $item = mysqli_fetch_all($item);
+                array_push($item[0], $menu[3]);
+                array_push($men, $item);
+            }
+            echo json_encode($men);
         }
         
     }else if($_SESSION['account-type'] == 'restaurant') {
@@ -140,6 +155,21 @@ if(isset($_SESSION['userid'])) {
                 }else{
                     http_response_code(500);
                 }
+            }else if($_GET['action'] == 'orderedmenu') {
+                $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
+                $query = "select * from ordered_menu where order_id=$order_id";
+                $menus = mysqli_query($conn, $query);
+                $menus = mysqli_fetch_all($menus);
+                $men = array();
+                foreach($menus as $menu) {
+                    $menu_id = $menu[2];
+                    $query = "select * from menu where id=$menu_id";
+                    $item = mysqli_query($conn, $query);
+                    $item = mysqli_fetch_all($item);
+                    array_push($item[0], $menu[3]);
+                    array_push($men, $item);
+                }
+                echo json_encode($men);
             }
         }else{
             if(!isset($_GET['filter']))

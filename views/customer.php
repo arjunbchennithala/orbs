@@ -42,7 +42,7 @@
   </div>
 
 
-
+  <a class="btn btn-dark" id="back" onclick="backfromdetails()" style="display:none;" href="#">Back</a>
   <!--<div id="container">-->
   <div class="content-pane" id="orders">
     <h3>Orders</h3>
@@ -57,6 +57,8 @@
   <table class="table table-hover" id="menu-container">
   </table>
   </div>
+
+  <div id="details" style="display: none;"></div>
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
     <div class="spinner-border" role="status" id="spinner">

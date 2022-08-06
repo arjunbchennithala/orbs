@@ -51,6 +51,8 @@
       <div id="menu-display"></div>
   </div>
   <button class="btn btn-dark" id="back" onclick="clickedBack()" style="display : none"><- Back</button>
+  <button class="btn btn-dark" id="backfromdetailsorders" onclick="clickedBackDetailsOrders()" style="display : none"><- Back</button>
+  <button class="btn btn-dark" id="backfromdetailsrequests" onclick="clickedBackDetailsRequests()" style="display : none"><- Back</button>
   <div class="div-center" id="menuAdd" style="display: none">
             <div class="content">
                 <h3>Add Menu</h3>
@@ -74,6 +76,7 @@
                 </form>
             </div>
         </div>
+        <button class="btn btn-dark" id="back" onclick="clickedBack()" style="display : none"><- Back</button>
     <div class="div-center" id="menuEdit" style="display: none">
     <div class="content">
                 <h3>Edit Menu</h3>
@@ -98,6 +101,8 @@
                 </form>
             </div>
     </div>
+
+    <div id="details"></div>
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
     <div class="spinner-border" role="status" id="spinner" style="display: none;">
