@@ -2,7 +2,7 @@
 session_start();
 include('db/connect.php');
 header("Content-Type: application/json");
-if(isset($_SESSION['userid'])) {
+if(isset($_SESSION['admin'])) {
     $type = $_GET['type'];
     $skip = mysqli_real_escape_string($conn, $_GET['skip']);
     if(isset($_GET['id'])) 
@@ -58,20 +58,36 @@ if(isset($_SESSION['userid'])) {
     }else if($type == 'counts') {
         $query = "select count(id) from restaurant";
         $res = mysqli_query($conn, $query);
-        $restaurant = mysqli_fetch_all($res)[0];
+        $restaurant = mysqli_fetch_all($res)[0][0];
 
         $query = "select count(id) from customer";
         $res = mysqli_query($conn, $query);
-        $customer = mysqli_fetch_all($res)[0];
+        $customer = mysqli_fetch_all($res)[0][0];
+
+        $order = array();
 
         $query = "select count(id) from orders";
         $res = mysqli_query($conn, $query);
-        $order = mysqli_fetch_all($res)[0];
+        $order[0] = mysqli_fetch_all($res)[0][0];
 
-        $count = array($restaurant, $customer, $order);
+        $query = "select count(id) from orders where state='cancelled'";
+        $res = mysqli_query($conn, $query);
+        $order[1] = mysqli_fetch_all($res)[0][0];
+
+        $query = "select count(id) from orders where state='rejected'";
+        $res = mysqli_query($conn, $query);
+        $order[2] = mysqli_fetch_all($res)[0][0];
+
+        $query = "select count(id) from orders where state='accepted'";
+        $res = mysqli_query($conn, $query);
+        $order[3] = mysqli_fetch_all($res)[0][0];
+
+        $query = "select count(id) from orders where state='confirmed'";
+        $res = mysqli_query($conn, $query);
+        $order[4] = mysqli_fetch_all($res)[0][0];
+
+        $count = array($restaurant, $customer, $order[0], $order[1], $order[2], $order[3], $order[4]);
         echo json_encode($count);
-    }else if($type == 'menu') {
-        
     }
 }else{
     http_response_code(401);

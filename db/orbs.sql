@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 04, 2022 at 02:39 AM
+-- Generation Time: Aug 09, 2022 at 05:42 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -128,7 +128,8 @@ CREATE TABLE `orders` (
   `total_price` bigint NOT NULL,
   `ordered_on` datetime NOT NULL,
   `seats` int NOT NULL,
-  `state` varchar(10) NOT NULL
+  `state` varchar(10) NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

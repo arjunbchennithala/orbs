@@ -1,9 +1,9 @@
 <?php
 session_start();
 include('../db/connect.php');
-if(isset($_SESSION['account-type'])) {
-    if($_SESSION['account-type']=='admin')
-        include('dashboard.php');
+if(isset($_SESSION['admin'])) {
+    if($_SESSION['admin']== true)
+        header('Location: dashboard.php');
 }else{
     if(!isset($_POST['submit-button'])) {
 ?>
@@ -56,6 +56,7 @@ if(isset($_SESSION['account-type'])) {
         $res = mysqli_query($conn, $query);
         var_dump($res);
         if(mysqli_num_rows($res)>0) {
+            $_SESSION['admin'] = true;
             header("Location: dashboard.php");
         }
        

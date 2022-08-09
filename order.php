@@ -68,7 +68,7 @@ if(isset($_SESSION['userid'])) {
                 $filter = mysqli_real_escape_string($conn, $_GET['filter']);
                 $query = "select * from orders where cust_id=$user_id and state='$filter' order by id desc";
             }else{
-                $query = "select * from orders where cust_id=$user_id and state!='hidden' order by id desc";
+                $query = "select * from orders where cust_id=$user_id and hidden!=1 order by id desc";
             }
             $res = mysqli_query($conn, $query);
             if(mysqli_num_rows($res)>0) {
@@ -104,7 +104,7 @@ if(isset($_SESSION['userid'])) {
             }
         }else if($action == 'hide') {
             $order_id = mysqli_real_escape_string($conn, $_GET['order_id']);
-            $query = "update orders set state='hidden' where id=$order_id";
+            $query = "update orders set hidden=1 where id=$order_id";
             if(mysqli_query($conn, $query)){
                 http_response_code(201);
             }else{

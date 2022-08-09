@@ -1,4 +1,5 @@
 <?php
-unset($_SESSION['account-type']);
+session_start();
+unset($_SESSION['admin']);
 header("Location: /orbs");
 ?>
