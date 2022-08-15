@@ -47,7 +47,7 @@ if(isset($_SESSION['admin'])) {
             http_response_code(204);
         }
     }else if($type == 'complaints') {
-        $query = "select id, rest_id, cust_id, text, date_and_time from complaints order by id desc limit $skip, 50";
+        $query = "select id, user_id, user_type, text, date_and_time from complaints order by id desc limit $skip, 50 where hidden=0";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
             $complaint = mysqli_fetch_all($res);

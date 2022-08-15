@@ -32,6 +32,14 @@ else if(!isset($_POST['submit-button'])) {
         </div>
     </nav>
 
+    <?php 
+        if (isset($_GET['status'])) {
+            if($_GET['status']=='failed'){
+                echo "<p>Failed to register</p>";
+            }
+        } 
+    ?>
+
     <div class="div-center" id="account-selection" style="height: 100px;">
         <label for="selection">Select type of the account</label>
         <select class="form-select" id="selection" name="account-type" onchange="account_change()">
@@ -69,10 +77,6 @@ else if(!isset($_POST['submit-button'])) {
                     <div class="form-group">
                         <label for="mobile">Mobile Number</label>
                         <input type="text" class="form-control" id="mobile" name="mobile_number" placeholder="Mob No">
-                    </div>
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" class="form-control" id="country" name="country" placeholder="Country">
                     </div>
                     <div class="form-group">
                         <label for="state">State</label>
@@ -171,12 +175,12 @@ else{
         $password = hash('md5', $_POST['password']);
         //$password = mysqli_real_escape_string($conn, $_POST['password']);
         $mobile_number = mysqli_real_escape_string($conn, $_POST['mobile_number']);
-        $country = mysqli_real_escape_string($conn, $_POST['country']);
+        //$country = mysqli_real_escape_string($conn, $_POST['country']);
         $state = mysqli_real_escape_string($conn, $_POST['state']);
         $date = date('y-m-d');
-        $query = "insert into customer(name, dob, email, password, mobile_number, country, state, created)";
-        $query .= " values('$name', '$dob', '$email', '$password', '$mobile_number', '$country', '$state', '$date')";
-        echo $query;
+        $query = "insert into customer(name, dob, email, password, mobile_number, state, created)";
+        $query .= " values('$name', '$dob', '$email', '$password', '$mobile_number', '$state', '$date')";
+        //echo $query;
     } else if($_POST['account-type'] == 'restaurant') {
 
         $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -190,15 +194,15 @@ else{
 
         $query = "insert into restaurant(name, address, location_link, email, phon_no, password, created)";
         $query .= " values('$name', '$address', '$location_link', '$email', '$phone_no', '$password', '$date')";
-        echo $query;
+        //echo $query;
     }
     $res = mysqli_query($conn, $query);
     if($res) {
         //echo "Success";
-        header("Location: /orbs/login");
+        header("Location: /orbs/login?status=success");
     }else {
         //echo "Failed";
-        header("Location: /orbs/register");
+        header("Location: /orbs/register?status=failed");
     }
 }
 include('../lib/footer.php');

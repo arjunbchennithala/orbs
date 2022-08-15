@@ -4,18 +4,18 @@ function initiate() {
 		$('#spinner').hide();
 		$('#content').empty();
 		if(status == "nocontent") {
-			$('#content').append("<p>No Orders yet</p>");
+			$('#content').append("<p>No Orders</p>");
 		}else {
 			$('#content').append("<table id='tb' class='table table-hover'></table>");
 			$('#tb').append("<thead><tr><th>#</th><th>Order ID</th><th>Restaurant</th><th>Order for</th><th>Price</th><th>Seats</th><th>Status</th><th>Ordered on</th><th>Action</th></tr></thead>");
 			$('#tb').append("<tbody id='table-bod'></tbody>");
 			for(var i=0; i<data.length; i++) {
 				if(data[i][7] == 'requested')
-					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-danger' onclick='cancelOrder("+data[i][0]+")'>Cancel</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][9]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-danger' onclick='cancelOrder("+data[i][0]+")'>Cancel</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
 				else if(data[i][7] == 'accepted')
-					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-success' onclick='payOrder("+data[i][0]+")'>Pay</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][9]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-success' onclick='payOrder("+data[i][0]+")'>Pay</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
 				else
-					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][8]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-warning' onclick='hideOrder("+data[i][0]+")'>Hide</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
+					$('#table-bod').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][9]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][6]+"</td><td>"+data[i][7]+"</td><td>"+data[i][5]+"</td><td><a href='#' class='btn btn-warning' onclick='hideOrder("+data[i][0]+")'>Hide</a><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>");
 			}
 		}
     });
@@ -36,6 +36,14 @@ function ordersClicked() {
 	$('#restaurant').hide();
 	initiate();
 	$('#orders').show();
+}
+
+function complaintsClicked() {
+	$('#search-result').hide();
+	$('#details').hide();
+	$('#restaurant').hide();
+	$('#orders').hide();
+	$('#complaints').show();
 }
 
 function search() {

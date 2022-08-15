@@ -24,6 +24,13 @@ function complaintsClicked() {
     $(".tabs").hide();
     $("#complaints").show();
     $.get("../fetch.php?type=complaints&skip=0", function(data, status){
-        console.log(data);
+        $('#complaints').empty();
+        if(status == "nocontent") {
+            console.log("No Content");
+            $('#complaints').append("<h3>No complaints</h3>");
+        }else{
+            console.log(data);
+            $('#complaints').append("<table></table>");
+        }
     });
 }

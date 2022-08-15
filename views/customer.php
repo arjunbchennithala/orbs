@@ -17,6 +17,9 @@
               <li class="nav-item">
                   <a class="nav-link" href="#" onclick="ordersClicked()">Orders</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="complaintsClicked()">Complaints</a>
+              </li>
               <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Account
@@ -59,6 +62,22 @@
   </div>
 
   <div id="details" style="display: none;"></div>
+
+  <div class="div-center" id="complaints" style="display: none">
+    <div class="content">
+                <h3>Complaints</h3>
+                <hr>
+                <form onsubmit="return complaints()">
+                    <div class="form-group">
+                        <label for="editdescription">Your complaint</label>
+                        <input type="textarea" class="form-control" id="editdescription" name="text" placeholder="Complaint">
+                    </div> <br>
+                    <br>
+                    <button type="submit" class="btn btn-warning" name="submit-button">Submit</button>
+                    <hr>
+                </form>
+            </div>
+    </div>
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
     <div class="spinner-border" role="status" id="spinner">

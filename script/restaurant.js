@@ -9,7 +9,6 @@ function initiate() {
         else {
             $('#orders').append("<h3>Orders</h3><hr><table class='table table-hover'><thead><tr><th>#</th><th>Order ID</th><th>Customer ID</th><th>Date&time</th><th>Seats</th><th>Price</th><th>Confirmation</th></tr></thead><tbody id='order-table'></tbody><table>");
             for(var i=0; i<data.length; i++) {
-                console.log("somethin");
                 $('#order-table').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][1]+"</td><td>"+data[i][3]+"</td><td>"+data[i][6]+"</td><td>"+data[i][4]+"</td><td><button class='btn btn-warning' onclick='confirmOrder("+data[i][0]+")'>Confirm</button><button class='btn btn-success' onclick='orderDetails("+data[i][0]+")'>Details</button></td></tr>")
             }
         }
@@ -19,6 +18,7 @@ function initiate() {
 
 function requestsClicked() {
     $('#orders').hide();
+    $('#complaints').hide();
     $('#menu').hide();
     $('#menuAdd').hide();
     $('#menuEdit').hide();
@@ -33,7 +33,7 @@ function requestsClicked() {
         else {
             $('#requests').append("<h3>Requests</h3><hr><table class='table table-hover'><thead><tr><th>#</th><th>Order ID</th><th>Customer ID</th><th>Date&time</th><th>Seats</th><th>Price</th><th colspan='2' >Action</th></tr></thead><tbody id='td'></tbody><table>");
             for(var i=0; i<data.length; i++) {
-                $('#td').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][1]+"</td><td>"+data[i][3]+"</td><td>"+data[i][6]+"</td><td>"+data[i][4]+"</td><td><a href='#' class='btn btn-success' onclick='acceptOrder("+data[i][0]+")'>Accept</a><a href='#' class='btn btn-warning' onclick='rejectOrder("+data[i][0]+")'>Reject</a>><button class='btn btn-success' onclick='requestDetails("+data[i][0]+")'>Details</button></td></tr>")
+                $('#td').append("<tr><td>"+(i+1)+"</td><td>"+data[i][0]+"</td><td>"+data[i][1]+"</td><td>"+data[i][3]+"</td><td>"+data[i][6]+"</td><td>"+data[i][4]+"</td><td><a href='#' class='btn btn-success' onclick='acceptOrder("+data[i][0]+")'>Accept</a><a href='#' class='btn btn-warning' onclick='rejectOrder("+data[i][0]+")'>Reject</a><button class='btn btn-success' onclick='requestDetails("+data[i][0]+")'>Details</button></td></tr>")
             }
         }
     });
@@ -41,6 +41,7 @@ function requestsClicked() {
 
 function ordersClicked() {
     $('#requests').hide();
+    $('#complaints').hide();
     $('#menu').hide();
     $('#menuEdit').hide();
     $('#back').hide();
@@ -48,9 +49,20 @@ function ordersClicked() {
     initiate();
 }
 
+function complaintsClicked() {
+    $('#requests').hide();
+    $('#menu').hide();
+    $('#menuEdit').hide();
+    $('#orders').hide();
+    $('#back').hide();
+    $('#menuAdd').hide();
+    $('#complaints').show();
+}
+
 function menuClicked() {
     $('#requests').hide();
     $('#orders').hide();
+    $('#complaints').hide();
     $('#menuAdd').hide();
     $('#menuEdit').hide();
     $('#back').hide();
@@ -226,4 +238,8 @@ function clickedBackDetailsRequests() {
     $('#backfromdetailsrequests').hide();
     $('#details').hide();
     requestsClicked();
+}
+
+function complaints() {
+    return false;
 }

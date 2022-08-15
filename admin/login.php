@@ -29,6 +29,13 @@ if(isset($_SESSION['admin'])) {
   </div>
 </nav>
 <div class="back">
+    <?php
+        if(isset($_GET['status'])){
+            if($_GET['status']=='failed'){
+                echo "<p>Failed to login</p>";
+            }
+        }
+    ?>
     <div class="div-center-admin">
     <form method="post" onsubmit="return validateForm()">
                     <div class="form-group">
@@ -58,6 +65,8 @@ if(isset($_SESSION['admin'])) {
         if(mysqli_num_rows($res)>0) {
             $_SESSION['admin'] = true;
             header("Location: dashboard.php");
+        }else{
+            header("Location: login.php?status=failed");
         }
        
     }

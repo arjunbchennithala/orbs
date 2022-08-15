@@ -32,6 +32,15 @@ if(isset($_SESSION['userid'])) {
         </div>
     </nav>
     <!--<div class="back">-->
+        <?php 
+            if(isset($_GET['status'])){
+                if($_GET['status']=='success') {
+                    echo "<p>Successfully registered, Login Now</p>";
+                }else if($_GET['status']=='failed'){
+                    echo "<p>Failed to Login</p>";
+                }
+            }
+        ?>
         <div class="div-center">
             <div class="content">
                 <h3>Login</h3>
@@ -39,11 +48,11 @@ if(isset($_SESSION['userid'])) {
                 <form method="post" onsubmit="return validateForm()">
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="username" placeholder="Email">
+                        <input type="email" class="form-control" id="email" name="username" placeholder="Email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                     </div> <br>
                     <div class="form-group">
                         <label for="selection">Select type of the account</label>
@@ -70,9 +79,9 @@ if(isset($_SESSION['userid'])) {
     $account_type = mysqli_real_escape_string($conn, $_POST['account-type']);
     
     if($account_type == "customer")
-        $query = "select * from customer where email='$username' AND password='$password'";
+        $query = "select * from customer where email='$username' AND password='$password' and active=1";
     else if($account_type == "restaurant")
-        $query = "select * from restaurant where email='$username' AND password='$password'";
+        $query = "select * from restaurant where email='$username' AND password='$password' and active=1";
 
     $res = mysqli_query($conn, $query);
     if(mysqli_num_rows($res)>0) {
@@ -83,6 +92,7 @@ if(isset($_SESSION['userid'])) {
         header("Location: /orbs");
     }else {
         echo "<br>Failed to login";
+        header("Location: /orbs/login?status=failed");
     }
 }
 

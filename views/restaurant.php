@@ -30,6 +30,9 @@
               <li class="nav-item">
                   <a class="nav-link" href="#" onclick="menuClicked()">Menu</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="complaintsClicked()">Complaints</a>
+              </li>
           </ul>
       </div>
   </div>
@@ -103,6 +106,23 @@
     </div>
 
     <div id="details"></div>
+
+    <div class="div-center" id="complaints" style="display: none">
+    <div class="content">
+                <h3>Complaints</h3>
+                <hr>
+                <form onsubmit="return complaints()">
+                    <div class="form-group">
+                        <label for="editdescription">Your complaint</label>
+                        <input type="textarea" class="form-control" id="editdescription" name="text" placeholder="Complaint">
+                    </div> <br>
+                    <br>
+                    <button type="submit" class="btn btn-warning" name="submit-button">Submit</button>
+                    <hr>
+                </form>
+            </div>
+    </div>
+
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">
     <div class="spinner-border" role="status" id="spinner" style="display: none;">
