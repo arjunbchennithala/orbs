@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 09, 2022 at 05:42 AM
+-- Generation Time: Aug 16, 2022 at 03:23 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -48,10 +48,11 @@ INSERT INTO `admin` (`username`, `password`) VALUES
 
 CREATE TABLE `complaints` (
   `id` bigint NOT NULL,
-  `rest_id` bigint NOT NULL,
-  `cust_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
+  `user_type` varchar(20) NOT NULL,
   `text` varchar(500) NOT NULL,
-  `date_and_time` date NOT NULL
+  `date_and_time` date NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -69,7 +70,8 @@ CREATE TABLE `customer` (
   `mobile_number` varchar(15) NOT NULL,
   `state` varchar(20) NOT NULL,
   `profile_photo` longblob,
-  `created` date NOT NULL
+  `created` date NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -85,20 +87,6 @@ CREATE TABLE `menu` (
   `description` varchar(300) NOT NULL,
   `price` bigint NOT NULL,
   `state` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu_photo`
---
-
-CREATE TABLE `menu_photo` (
-  `id` bigint NOT NULL,
-  `rest_id` bigint NOT NULL,
-  `menu_id` bigint NOT NULL,
-  `type` varchar(30) NOT NULL,
-  `value` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -147,20 +135,8 @@ CREATE TABLE `restaurant` (
   `phon_no` varchar(15) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `created` date DEFAULT NULL,
-  `rating` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `restaurant_photo`
---
-
-CREATE TABLE `restaurant_photo` (
-  `id` bigint NOT NULL,
-  `rest_id` bigint NOT NULL,
-  `type` varchar(30) NOT NULL,
-  `value` longblob NOT NULL
+  `rating` int DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -202,12 +178,6 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu_photo`
---
-ALTER TABLE `menu_photo`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `ordered_menu`
 --
 ALTER TABLE `ordered_menu`
@@ -225,12 +195,6 @@ ALTER TABLE `orders`
 ALTER TABLE `restaurant`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `restaurant_photo`
---
-ALTER TABLE `restaurant_photo`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `reviews`
@@ -261,12 +225,6 @@ ALTER TABLE `menu`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `menu_photo`
---
-ALTER TABLE `menu_photo`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `ordered_menu`
 --
 ALTER TABLE `ordered_menu`
@@ -282,12 +240,6 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `restaurant`
 --
 ALTER TABLE `restaurant`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `restaurant_photo`
---
-ALTER TABLE `restaurant_photo`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
