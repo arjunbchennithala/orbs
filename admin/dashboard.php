@@ -66,7 +66,7 @@ if(!isset($_SESSION['admin'])){
 
 <div class="tabs" id="customers" style="display: none;"></div>
 
-<div class="tabs" id="compaints" style="display: none;"></div>
+<div class="tabs" id="complaints" style="display: none;"></div>
 <script>
   $(document).ready(function(){
     statusClicked();

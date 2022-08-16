@@ -2,6 +2,7 @@ function initiate() {
 	$('#spinner').show();
     $.get("order.php?action=fetch", function(data, status){
 		$('#spinner').hide();
+		$('#complaints').hide();
 		$('#content').empty();
 		if(status == "nocontent") {
 			$('#content').append("<p>No Orders</p>");
@@ -25,6 +26,7 @@ function homeClicked() {
 	if($('#search-result').children().length>0) {
 		$('#orders').hide();
 		$('#details').hide();
+		$('#complaints').hide();
 		$('#search-result').show();
 	}
 	$('#restaurant').hide();
@@ -33,6 +35,7 @@ function homeClicked() {
 function ordersClicked() {
 	$('#search-result').hide();
 	$('#details').hide();
+	$('#complaints').hide();
 	$('#restaurant').hide();
 	initiate();
 	$('#orders').show();
@@ -51,6 +54,7 @@ function search() {
 	if(text != '' && text != ' ') {
 		$('#orders').hide();
 		$('#restaurant').hide();
+		$('#complaints').hide();
 		$('#details').hide();
 		$('#spinner').show();
 		$.get("search.php?type=restaurant&query="+text, function(data, status){
@@ -75,6 +79,7 @@ function search() {
 function checkRestaurant(rest_id) {
 	$('#spinner').show();
 	$('#orders').hide();
+	$('#complaints').hide();
 	$('#details').hide();
 	$('#search-result').hide();
 	$.get("menu.php?restid="+rest_id, function(data, status){
@@ -102,12 +107,14 @@ function back() {
 	$('#restaurant').hide();
 	$('#details').hide();
 	$('#back').hide();
+	$('#complaints').hide();
 	$('#search-result').show();
 }
 
 function backfromdetails() {
 	$('#restaurant').hide();
 	$('#details').hide();
+	$('#complaints').hide();
 	$('#back').hide();
 	$('#orders').show();
 }
@@ -227,4 +234,22 @@ function orderDetails(order_id) {
 			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][3]+"</td><td>"+data.responseJSON[i][0][6]+"</td></tr>")
 		}
 	}});
+}
+
+function complaints() {
+	var text = $('#complaint').val();
+	$('#complaint').val("");
+	if(text != "") {
+		$('#spinner').show();
+		$.ajax({url:"complaints.php", type:"post", data:text, complete:function(data){
+			$('#spinner').hide();
+			if(data.status == 201){
+				alert("Your complaint has been recorded..");
+				ordersClicked();
+			}
+			else
+				alert("Complaint is not submitted");
+		} });
+	}
+	return false;
 }

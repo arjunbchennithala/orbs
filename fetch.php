@@ -47,7 +47,12 @@ if(isset($_SESSION['admin'])) {
             http_response_code(204);
         }
     }else if($type == 'complaints') {
-        $query = "select id, user_id, user_type, text, date_and_time from complaints order by id desc limit $skip, 50 where hidden=0";
+        if(!isset($_GET['comp_id']))
+            $query = "select id, user_id, user_type, text, date_and_time from complaints  where hidden=0 order by id desc limit $skip, 50";
+        else{
+            $comp_id = mysqli_real_escape_string($conn, $_GET['comp_id']);
+            $query = "select id, user_id, user_type, text, date_and_time from complaints  where id=$comp_id";
+        }
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
             $complaint = mysqli_fetch_all($res);

@@ -69,8 +69,8 @@
                 <hr>
                 <form onsubmit="return complaints()">
                     <div class="form-group">
-                        <label for="editdescription">Your complaint</label>
-                        <input type="textarea" class="form-control" id="editdescription" name="text" placeholder="Complaint">
+                        <label for="complaint">Your complaint</label>
+                        <input type="textarea" class="form-control textarea" id="complaint" name="text" placeholder="Complaint">
                     </div> <br>
                     <br>
                     <button type="submit" class="btn btn-warning" name="submit-button">Submit</button>
