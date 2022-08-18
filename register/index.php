@@ -52,7 +52,7 @@ else if(!isset($_POST['submit-button'])) {
             <div class="content">
                 <h3>Customer registration</h3>
                 <hr>
-                <form method="post" onsubmit="return validateCustomerForm()">
+                <form method="post" onsubmit="return validateCustomerForm()" enctype="multipart/form-data">
                     <div class ="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="text" name="name" placeholder="Full name">
@@ -82,6 +82,18 @@ else if(!isset($_POST['submit-button'])) {
                         <label for="state">State</label>
                         <input type="text" class="form-control" id="state" name="state" placeholder="State">
                     </div>
+                    <div class="form-group">
+                        <label for="security-question">Security question for account recovery </label>
+                        <input type="text" class="form-control" id="security-question" name="question" placeholder="Your security question">
+                    </div>
+                    <div class="form-group">
+                        <label for="security-answer">Security answer for account recovery </label>
+                        <input type="text" class="form-control" id="security-answer" name="answer" placeholder="Your security answer">
+                    </div>
+                    <div class="form-group">
+                        <label for="prphoto">Photo</label>
+                        <input type="file" class="form-control" id="prphoto" name="photo" placeholder="Photo">
+                    </div>
                     <br>
                     <input type="hidden" name="account-type" value="customer">
                     <button type="submit" class="btn btn-primary" name="submit-button">Register</button>
@@ -94,7 +106,7 @@ else if(!isset($_POST['submit-button'])) {
             <div class="content">
                 <h3>Restaurant registration</h3>
                 <hr>
-                <form method="post" onsubmit="return validateRestaurantForm()">
+                <form method="post" onsubmit="return validateRestaurantForm()" enctype="multipart/form-data">
                     <div class ="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="text" name="name" placeholder="Full name">
@@ -124,6 +136,18 @@ else if(!isset($_POST['submit-button'])) {
                         <label for="location_link">Location link</label>
                         <input type="text" class="form-control" id="location_link" name="location_link" placeholder="Location link">
                     </div>
+                    <div class="form-group">
+                        <label for="security-question-rest">Security question for account recovery </label>
+                        <input type="text" class="form-control" id="security-question-rest" name="question" placeholder="Your security question">
+                    </div>
+                    <div class="form-group">
+                        <label for="security-answer-rest">Security answer for account recovery </label>
+                        <input type="text" class="form-control" id="security-answer-rest" name="answer" placeholder="Your security answer">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">Photo</label>
+                        <input type="file" class="form-control" id="photo" name="photo" placeholder="Photo">
+                    </div>
                     <br>
                     <input type="hidden" name="account-type" value="restaurant">
                     <button type="submit" class="btn btn-primary" name="submit-button">Register</button>
@@ -133,75 +157,48 @@ else if(!isset($_POST['submit-button'])) {
         </div>
 </div>
     
-
-<!--
-    Customer registration
-    <form method="post" onsubmit="return validateCustomerForm()">
-        <input type="text" name="name" placeholder="Full name" required> <br>
-        DOB : <input type="date" name="dob" required> <br>
-        <input type="email" name="email" placeholder="email"  required> <br>
-        <input type="password" name="password" placeholder="Password" required > <br>
-        <input type="password" name="password2" placeholder="Repeat password" required> <br>
-        <input type="number" name="mobile_number" placeholder="Mob Num" required > <br>
-        <input type="text" name="country" placeholder="Country"  required> <br>
-        <input type="text" name="state" placeholder="state" required > <br>
-        <input type="hidden" name="account-type" value="customer"> <br>
-        <input type="submit" value="Signup" name="submit-button">
-    </form>
-
-    <br><br><br><br>
-    Restaurant registration
-    <form method="post" onsubmit="return validateRestaurantForm()">
-        <input type="text" name="name" placeholder="Name" required> <br>
-        <input type="email" name="email" placeholder="Email id"  required> <br>
-        <input type="password" name="password" placeholder="Password" required > <br>
-        <input type="password" name="password2" placeholder="Repeat password" required> <br>
-        <input type="number" name="phone_no" placeholder="Mob Num" required > <br>
-        <input type="text" name="address" placeholder="address"  required> <br>
-        <input type="text" name="location_link" placeholder="location link" required > <br>
-        <input type="hidden" name="account-type" value="restaurant"> <br>
-        <input type="submit" value="Signup" name="submit-button">
-    </form>
--->
-
 <?php
 }
 else{
     if($_POST['account-type'] == 'customer') {
-
+        $file_name = time().$_FILES['photo']['name'];
+        $folder = "../uploads/photos/customer/profile/$file_name";
+        if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder))
+            goto ex;
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $password = hash('md5', $_POST['password']);
-        //$password = mysqli_real_escape_string($conn, $_POST['password']);
         $mobile_number = mysqli_real_escape_string($conn, $_POST['mobile_number']);
-        //$country = mysqli_real_escape_string($conn, $_POST['country']);
         $state = mysqli_real_escape_string($conn, $_POST['state']);
+        $question = mysqli_real_escape_string($conn, strtolower($_POST['question']));
+        $answer = hash('md5', strtolower($_POST['answer']));
         $date = date('y-m-d');
-        $query = "insert into customer(name, dob, email, password, mobile_number, state, created)";
-        $query .= " values('$name', '$dob', '$email', '$password', '$mobile_number', '$state', '$date')";
-        //echo $query;
+        $query = "insert into customer(profile_photo, name, dob, email, password, mobile_number, state, created, question, answer)";
+        $query .= " values('$file_name', '$name', '$dob', '$email', '$password', '$mobile_number', '$state', '$date', '$question', '$answer')";
     } else if($_POST['account-type'] == 'restaurant') {
-
+        $file_name = time().$_FILES['photo']['name'];
+        $folder = "../uploads/photos/restaurant/profile/$file_name";
+        if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder))
+            goto ex;
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $address = mysqli_real_escape_string($conn, $_POST['address']);
         $location_link = mysqli_real_escape_string($conn, $_POST['location_link']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $phone_no = mysqli_real_escape_string($conn, $_POST['phone_no']);
         $password = hash('md5', $_POST['password']);
-        //$password = mysqli_real_escape_string($conn, $_POST['password']);
+        $question = mysqli_real_escape_string($conn, strtolower($_POST['question']));
+        $answer = hash('md5', strtolower($_POST['answer']));
         $date = date('y-m-d');
 
-        $query = "insert into restaurant(name, address, location_link, email, phon_no, password, created)";
-        $query .= " values('$name', '$address', '$location_link', '$email', '$phone_no', '$password', '$date')";
-        //echo $query;
+        $query = "insert into restaurant(photo, name, address, location_link, email, phon_no, password, created)";
+        $query .= " values('$file_name', '$name', '$address', '$location_link', '$email', '$phone_no', '$password', '$date')";
     }
     $res = mysqli_query($conn, $query);
+ex:
     if($res) {
-        //echo "Success";
         header("Location: /orbs/login?status=success");
     }else {
-        //echo "Failed";
         header("Location: /orbs/register?status=failed");
     }
 }

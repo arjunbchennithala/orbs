@@ -241,7 +241,7 @@ function complaints() {
 	$('#complaint').val("");
 	if(text != "") {
 		$('#spinner').show();
-		$.ajax({url:"complaints.php", type:"post", data:text, complete:function(data){
+		$.ajax({url:"complaints.php?post", type:"post", data:text, complete:function(data){
 			$('#spinner').hide();
 			if(data.status == 201){
 				alert("Your complaint has been recorded..");

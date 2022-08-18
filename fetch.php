@@ -94,6 +94,14 @@ if(isset($_SESSION['admin'])) {
         $count = array($restaurant, $customer, $order[0], $order[1], $order[2], $order[3], $order[4]);
         echo json_encode($count);
     }
+}else if(isset($_SESSION['userid'])) {
+    if($_SESSION['account-type'] == 'customer') {
+        $uid = $_SESSION['userid'];
+        $query = "select id, name, dob, email, mobile_number, profile_photo from customer where id=$uid";
+        $res = mysqli_query($conn, $query);
+        $res = mysqli_fetch_assoc($res);
+        echo json_encode($res);
+    }
 }else{
     http_response_code(401);
 }

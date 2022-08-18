@@ -25,9 +25,10 @@ function complaintsClicked() {
     $("#complaints").show();
     $.get("../fetch.php?type=complaints&skip=0", function(data, status){
         $('#complaints').empty();
+        $('#complaints').append("<h3>Complaints</h3><hr>");
         if(status == "nocontent") {
             console.log("No Content");
-            $('#complaints').append("<h3>No complaints</h3>");
+            $('#complaints').append("<h5>No complaints</h5>");
         }else{
             //console.log(data);
             $('#complaints').append("<table class='table table-striped'><thead><tr><th>#</th><th>Complaint ID</th><th>User ID</th><th>User type</th><th>Date</th><th>Text</th><th>Action</th><tr></thead><tbody id='complaints-table-body'></tbody></table>");
