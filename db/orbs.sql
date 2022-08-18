@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 16, 2022 at 03:23 AM
+-- Generation Time: Aug 19, 2022 at 01:56 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -69,7 +69,9 @@ CREATE TABLE `customer` (
   `password` varchar(255) NOT NULL,
   `mobile_number` varchar(15) NOT NULL,
   `state` varchar(20) NOT NULL,
-  `profile_photo` longblob,
+  `question` varchar(100) NOT NULL,
+  `answer` varchar(100) NOT NULL,
+  `profile_photo` varchar(20) DEFAULT NULL,
   `created` date NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -84,6 +86,7 @@ CREATE TABLE `menu` (
   `id` bigint NOT NULL,
   `rest_id` bigint NOT NULL,
   `name` varchar(50) NOT NULL,
+  `photo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `description` varchar(300) NOT NULL,
   `price` bigint NOT NULL,
   `state` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
@@ -133,6 +136,9 @@ CREATE TABLE `restaurant` (
   `location_link` varchar(100) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
   `phon_no` varchar(15) DEFAULT NULL,
+  `photo` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `question` varchar(100) NOT NULL,
+  `answer` varchar(100) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `created` date DEFAULT NULL,
   `rating` int DEFAULT NULL,
