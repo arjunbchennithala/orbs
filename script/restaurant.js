@@ -73,7 +73,7 @@ function menuClicked() {
         $('#menu-display').empty();
         $('#menu-display').append("<table class='table table-striped'><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Price</th><th>State</th><th>Action</th></tr></thead><tbody id='menu-table' ></tbody></table>")
         for(var i=0; i<data.length; i++) {
-            if(data[i][5] == 'available') {
+            if(data[i][6] == 'available') {
                 $action = "hideMenu(" + data[i][0] +")";
                 $actionString = "Hide";
                 $buttonClass = "btn btn-warning";
@@ -82,7 +82,7 @@ function menuClicked() {
                 $actionString = "Show";
                 $buttonClass = "btn btn-success";
             }
-            $('#menu-table').append("<tr><td>"+(i+1)+"</td><td>"+data[i][2]+"</td><td>"+data[i][3]+"</td><td>"+data[i][4]+"</td><td>"+data[i][5]+"</td><td><button class='"+$buttonClass+"' onclick='"+$action+"'>"+$actionString+"</button><button class='btn btn-warning' onclick='clickedMenuEdit("+data[i][0]+")'>Edit</button></td></tr>")
+            $('#menu-table').append("<tr><td>"+(i+1)+"</td><td>"+data[i][2]+"</td><td>"+data[i][4]+"</td><td>"+data[i][5]+"</td><td>"+data[i][6]+"</td><td><button class='"+$buttonClass+"' onclick='"+$action+"'>"+$actionString+"</button><button class='btn btn-warning' onclick='clickedMenuEdit("+data[i][0]+")'>Edit</button></td></tr>")
         }
     }, error:function(){
         $('#spinner').hide();
@@ -162,10 +162,10 @@ function clickedMenuEdit(menu_id) {
     $('#menuEdit').show();
     $.get("menu.php?type=fetch&menu_id="+menu_id, function(data, status){
         $('#editname').val(data[0][2]);
-        $('#editdescription').val(data[0][3]);
-        $('#editprice').val(data[0][4]);
+        $('#editdescription').val(data[0][4]);
+        $('#editprice').val(data[0][5]);
         $('#men_id').val(data[0][0]);
-        menuValues = {"name":data[0][2], "description" : data[0][3], "price" : data[0][4]};
+        menuValues = {"name":data[0][2], "description" : data[0][4], "price" : data[0][5]};
     });
 }
 
@@ -207,7 +207,7 @@ function orderDetails(order_id) {
 		$('#details').empty();
 		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][3]+"</td><td>"+data.responseJSON[i][0][6]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }
@@ -223,7 +223,7 @@ function requestDetails(order_id) {
 		$('#details').empty();
 		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][3]+"</td><td>"+data.responseJSON[i][0][6]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }
@@ -241,5 +241,19 @@ function clickedBackDetailsRequests() {
 }
 
 function complaints() {
-    return false;
+	var text = $('#complaint').val();
+	$('#complaint').val("");
+	if(text != "") {
+		$('#spinner').show();
+		$.ajax({url:"complaints.php?post", type:"post", data:text, complete:function(data){
+			$('#spinner').hide();
+			if(data.status == 201){
+				alert("Your complaint has been recorded..");
+				ordersClicked();
+			}
+			else
+				alert("Complaint is not submitted");
+		} });
+	}
+	return false;
 }

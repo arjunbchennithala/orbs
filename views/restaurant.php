@@ -1,6 +1,6 @@
-    <link rel="stylesheet" href="stylesheet/main.css">
+<link rel="stylesheet" href="stylesheet/main.css">
     <script src="script/restaurant.js"></script>
-    <title>Home</title>
+    <title>Restaurant</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-sm sticky-top bg-warning navbar-light">
@@ -113,8 +113,8 @@
                 <hr>
                 <form onsubmit="return complaints()">
                     <div class="form-group">
-                        <label for="editdescription">Your complaint</label>
-                        <input type="textarea" class="form-control" id="editdescription" name="text" placeholder="Complaint">
+                        <label for="complaint">Your complaint</label>
+                        <input type="textarea" class="form-control" id="complaint" name="text" placeholder="Complaint">
                     </div> <br>
                     <br>
                     <button type="submit" class="btn btn-warning" name="submit-button">Submit</button>

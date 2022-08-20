@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="stylesheet/main.css">
     <script src="script/customer.js"></script>
-    <title>Home</title>
+    <title>Customer</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-sm sticky-top bg-warning navbar-light">

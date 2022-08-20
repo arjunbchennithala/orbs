@@ -92,7 +92,7 @@ function checkRestaurant(rest_id) {
 			var content = '<thead><tr><th>#</th><th>Name</th><th>Description</th><th>Price</th><th>Count</th></tr></thead><tbody id="menu-tb"></tbody>';
 			$('#menu-container').append(content);
 			for(var i=0; i<data.length; i++) {
-				var content = '<tr><td>'+(i+1)+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td><input type="number" onchange="changeCount()" min="0" id="'+data[i][0]+'-'+data[i][4]+'" style="width:100px" class="form-control count" placeholder="Count"></td></tr>';
+				var content = '<tr><td>'+(i+1)+'</td><td>'+data[i][2]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td><input type="number" onchange="changeCount()" min="0" id="'+data[i][0]+'-'+data[i][5]+'" style="width:100px" class="form-control count" placeholder="Count"></td></tr>';
 				$('#menu-tb').append(content);
 			}
 			var content = 'No of seats you need<input type="number" min="0" style="width:200px" class="form-control" id="no-of-seats" value="1" placeholder="No of Seats"><br>Date for the event<input class="form-control" type="date" id="date"><br>Time for the event<input class="form-control" type="time" id="time"><div id="price-print"></div>';
@@ -231,7 +231,7 @@ function orderDetails(order_id) {
 		$('#details').empty();
 		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][3]+"</td><td>"+data.responseJSON[i][0][6]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }

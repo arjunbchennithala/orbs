@@ -10,16 +10,7 @@ if(isset($_SESSION['userid'])) {
         $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
-            $restaurants = array();
-            while($restaurant = mysqli_fetch_row($res)) {
-                $id = $restaurant[0];
-                $query = "select value from restaurant_photo where rest_id=$id";
-                $photos = mysqli_query($conn, $query);
-                $photos = mysqli_fetch_all($photos);
-                array_push($restaurant, $photos);
-
-                array_push($restaurants, $restaurant);
-            }
+            $restaurants = mysqli_fetch_all($res);
             echo json_encode($restaurants);
         }else{
             http_response_code(204);

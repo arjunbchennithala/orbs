@@ -63,6 +63,7 @@ if(!isset($_SESSION['admin'])){
 </div>
 
 <div class="tabs" id="restaurants" style="display: none;"></div>
+<div class="tabs" id="restaurant-details" style="display: none;"></div>
 
 <div class="tabs" id="customers" style="display: none;"></div>
 

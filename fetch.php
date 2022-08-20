@@ -14,7 +14,7 @@ if(isset($_SESSION['admin'])) {
         if($id == '') 
             $query = "select id, name, address, location_link, email, phon_no, created, rating from restaurant order by id desc limit $skip, 50";
         else
-            $query = "select id, name, address, location_link, email, phon_no, created, rating from restaurant order by id desc where id=$id";
+            $query = "select id, name, address, location_link, email, phon_no, created, rating from restaurant where id=$id or LOCATE('$id', name) > 0 or LOCATE('$id', address) > 0 or LOCATE('$id', email) > 0 order by id desc";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {   
             $restaurant = mysqli_fetch_all($res);

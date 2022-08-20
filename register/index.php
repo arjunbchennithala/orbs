@@ -176,6 +176,7 @@ else{
         $date = date('y-m-d');
         $query = "insert into customer(profile_photo, name, dob, email, password, mobile_number, state, created, question, answer)";
         $query .= " values('$file_name', '$name', '$dob', '$email', '$password', '$mobile_number', '$state', '$date', '$question', '$answer')";
+       
     } else if($_POST['account-type'] == 'restaurant') {
         $file_name = time().$_FILES['photo']['name'];
         $folder = "../uploads/photos/restaurant/profile/$file_name";
@@ -191,15 +192,18 @@ else{
         $answer = hash('md5', strtolower($_POST['answer']));
         $date = date('y-m-d');
 
-        $query = "insert into restaurant(photo, name, address, location_link, email, phon_no, password, created)";
-        $query .= " values('$file_name', '$name', '$address', '$location_link', '$email', '$phone_no', '$password', '$date')";
+        $query = "insert into restaurant(photo, name, address, location_link, email, phon_no, password, created, question, answer)";
+        $query .= " values('$file_name', '$name', '$address', '$location_link', '$email', '$phone_no', '$password', '$date', '$question', '$answer')";
+        
     }
     $res = mysqli_query($conn, $query);
 ex:
     if($res) {
         header("Location: /orbs/login?status=success");
+        
     }else {
         header("Location: /orbs/register?status=failed");
+        
     }
 }
 include('../lib/footer.php');
