@@ -12,9 +12,9 @@ if(isset($_SESSION['admin'])) {
 
     if($type == 'restaurants') {
         if($id == '') 
-            $query = "select id, name, address, location_link, email, phon_no, created, rating from restaurant order by id desc limit $skip, 50";
+            $query = "select id, name, address, location_link, email, phon_no, created, rating, photo, active from restaurant order by id desc limit $skip, 50";
         else
-            $query = "select id, name, address, location_link, email, phon_no, created, rating from restaurant where id=$id or LOCATE('$id', name) > 0 or LOCATE('$id', address) > 0 or LOCATE('$id', email) > 0 order by id desc";
+            $query = "select id, name, address, location_link, email, phon_no, created, rating, photo, active from restaurant where id=$id";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {   
             $restaurant = mysqli_fetch_all($res);
@@ -24,9 +24,9 @@ if(isset($_SESSION['admin'])) {
         }
     }else if($type == 'customers') {
         if($id == '') 
-            $query = "select id, name, dob, email, mobile_number, state, profile_photo from customer order by id desc limit $skip, 50";
+            $query = "select id, name, dob, email, mobile_number, state, profile_photo, active from customer order by id desc limit $skip, 50";
         else
-            $query = "select id, name, dob, email, mobile_number, state, profile_photo from customer order by id desc where id=$id";
+            $query = "select id, name, dob, email, mobile_number, state, profile_photo, active from customer where id=$id";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {   
             $customer = mysqli_fetch_all($res);

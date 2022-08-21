@@ -25,7 +25,11 @@ function restaurantsClicked() {
         else{
             $('#search-result').append("<h3>Restaurants</h3><hr><table class='table table-striped'><thead><tr><th>#</th><th>Rest ID</th><th>Name</th><th>Address</th><th>Email</th><th>Action</th></tr></thead><tbody id='search-table'></tbody></table>");
             for(var i=0; i<data.responseJSON.length; i++) {
-                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][4]+"</td><td><button class='btn btn-danger' onclick='restaurantDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button><button class='btn btn-warning' onclick='restaurantDetails("+data.responseJSON[i][0]+")'>Details</button></td></tr>");
+                if(data.responseJSON[i][9] == 1)
+                    var txt = "<button class='btn btn-danger' onclick='restaurantDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button>";
+                else
+                    var txt = "<button class='btn btn-success' onclick='restaurantActivate("+data.responseJSON[i][0]+")'>Activate</button>"
+                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][4]+"</td><td>"+txt+"<button class='btn btn-warning' onclick='restaurantDetails("+data.responseJSON[i][0]+")'>Details</button></td></tr>");
             }
         }
     }});
@@ -44,7 +48,11 @@ function customersClicked() {
         else{
             $('#search-result').append("<h3>Customers</h3><hr><table class='table table-striped'><thead><tr><th>#</th><th>Cust ID</th><th>Name</th><th>Dob</th><th>Email</th><th>Mobile Number</th><th>State</th><th>Action</th></tr></thead><tbody id='search-table'></tbody></table>");
             for(var i=0; i<data.responseJSON.length; i++) {
-                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][3]+"</td><td>"+data.responseJSON[i][4]+"</td><td>"+data.responseJSON[i][5]+"</td><td><button class='btn btn-danger' onclick='customerDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button></td></tr>");
+                if(data.responseJSON[i][7] == 1)
+                    var txt = "<button class='btn btn-danger' onclick='customerDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button>";
+                else
+                    var txt = "<button class='btn btn-success' onclick='customerActivate("+data.responseJSON[i][0]+")'>Activate</button>"
+                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][3]+"</td><td>"+data.responseJSON[i][4]+"</td><td>"+data.responseJSON[i][5]+"</td><td>"+txt+"</td></tr>");
             }
         }
     }});
@@ -80,7 +88,12 @@ function searchRestaurants() {
         else{
             $('#search-result').append("<h3>Restaurants</h3><hr><table class='table table-striped'><thead><tr><th>#</th><th>Rest ID</th><th>Name</th><th>Address</th><th>Email</th><th>Action</th></tr></thead><tbody id='search-table'></tbody></table>");
             for(var i=0; i<data.responseJSON.length; i++) {
-                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][4]+"</td><td><button class='btn btn-danger' onclick='restaurantDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button><button class='btn btn-warning' onclick='restaurantDetails("+data.responseJSON[i][0]+")'>Details</button></td></tr>");
+                if(data.responseJSON[i][9] == 1)
+                    var txt = "<button class='btn btn-danger' onclick='restaurantDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button>";
+                else
+                    var txt = "<button class='btn btn-success' onclick='restaurantActivate("+data.responseJSON[i][0]+")'>Activate</button>"
+                $('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][4]+"</td><td>"+txt+"<button class='btn btn-warning' onclick='restaurantDetails("+data.responseJSON[i][0]+")'>Details</button></td></tr>");
+                //$('#search-table').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0]+"</td><td>"+data.responseJSON[i][1]+"</td><td>"+data.responseJSON[i][2]+"</td><td>"+data.responseJSON[i][4]+"</td><td><button class='btn btn-danger' onclick='restaurantDeactivate("+data.responseJSON[i][0]+")'>Deactivate</button><button class='btn btn-warning' onclick='restaurantDetails("+data.responseJSON[i][0]+")'>Details</button></td></tr>");
             }
         }
     }});
@@ -127,13 +140,33 @@ function viewComplaint(comp_id) {
 }
 
 function customerDeactivate(cust_id) {
+    $.ajax({url:"/orbs/accounts.php?account=customer&type=deactivate&id="+cust_id, type:"get", complete:function() {
+        customersClicked();
+    }});
+}
 
+function customerActivate(cust_id) {
+    $.ajax({url:"/orbs/accounts.php?account=customer&type=activate&id="+cust_id, type:"get", complete:function() {
+        customersClicked();
+    }});
 }
 
 function restaurantDeactivate(rest_id) {
+    $.ajax({url:"/orbs/accounts.php?account=restaurant&type=deactivate&id="+rest_id, type:"get", complete:function() {
+        restaurantsClicked();
+    }});
+}
 
+function restaurantActivate(rest_id) {
+    $.ajax({url:"/orbs/accounts.php?account=restaurant&type=activate&id="+rest_id, type:"get", complete:function() {
+        restaurantsClicked();
+    }});
 }
 
 function restaurantDetails(rest_id) {
-    
+    $(".tabs").hide();
+    $("#restaurant-details").show();
+    $.ajax({url:"/orbs/fetch.php?type=restaurants&skip=0&id="+rest_id, type:"get", complete:function(data){
+        $("#restaurant-details").append("<p>"+data.responseJSON+"</p>");
+    }});
 }
