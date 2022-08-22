@@ -79,9 +79,9 @@ if(isset($_SESSION['userid'])) {
     $account_type = mysqli_real_escape_string($conn, $_POST['account-type']);
     
     if($account_type == "customer")
-        $query = "select * from customer where email='$username' AND password='$password' and active=1";
+        $query = "select * from customer where email='$username' AND password='$password' AND active=1";
     else if($account_type == "restaurant")
-        $query = "select * from restaurant where email='$username' AND password='$password' and active=1";
+        $query = "select * from restaurant where email='$username' AND password='$password' AND active=1";
 
     $res = mysqli_query($conn, $query);
     if(mysqli_num_rows($res)>0) {

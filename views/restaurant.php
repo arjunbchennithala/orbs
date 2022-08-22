@@ -31,6 +31,9 @@
                   <a class="nav-link" href="#" onclick="menuClicked()">Menu</a>
               </li>
               <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="reviewsClicked()">Reviews</a>
+              </li>
+              <li class="nav-item">
                   <a class="nav-link" href="#" onclick="complaintsClicked()">Complaints</a>
               </li>
           </ul>
@@ -122,6 +125,11 @@
                 </form>
             </div>
     </div>
+
+    <div class="content-pane" id="reviews" style="display :none;">
+    <div id="reviews-container"></div>
+  </div>
+
 
 
   <div class="d-flex justify-content-center text-warning" id="loading" style="display :none;">

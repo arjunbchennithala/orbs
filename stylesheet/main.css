@@ -42,6 +42,16 @@ div.content {
   vertical-align: middle;
 }
 
+.profile-pic {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.review-photo {
+  border-radius: 80%;
+}
+
 /*
 
 #container {

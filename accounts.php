@@ -28,5 +28,18 @@ if(isset($_SESSION['admin'])) {
         }
     }
 }
+if(isset($_SESSION['userid'])) {
+    if($_GET['type'] == "restaurant") {
+        $id = mysqli_real_escape_string($conn, $_GET['id']);
+        $query = "select id, name, address, location_link, email, phon_no, photo, created from restaurant where id=$id";
+        $result = mysqli_query($conn, $query);
+        echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
+    }if($_GET['type'] == "customer") {
+        $id = mysqli_real_escape_string($conn, $_GET['id']);
+        $query = "select name, profile_photo from customer where id=$id";
+        $result = mysqli_query($conn, $query);
+        echo json_encode(mysqli_fetch_all($result, MYSQLI_ASSOC));
+    }
+}
 
 ?>

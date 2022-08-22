@@ -61,6 +61,14 @@
   </table>
   </div>
 
+  <div class="content-pane" id="restaurant-details" style="display :none;">
+  <a class="btn btn-dark" onclick="back()" href="#">Back</a>
+  <h3>Profile</h3>
+  <hr>
+  <div id="profile-container">
+  </div>
+  </div>
+
   <div id="details" style="display: none;"></div>
 
   <div class="div-center" id="complaints" style="display: none">

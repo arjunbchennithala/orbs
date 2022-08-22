@@ -2,6 +2,7 @@ function initiate() {
 	$('#spinner').show();
     $.get("order.php?action=fetch", function(data, status){
 		$('#spinner').hide();
+		$('#restaurant-details').hide();
 		$('#complaints').hide();
 		$('#content').empty();
 		if(status == "nocontent") {
@@ -28,13 +29,16 @@ function homeClicked() {
 		$('#details').hide();
 		$('#complaints').hide();
 		$('#search-result').show();
+		$('#restaurant').hide();
+		$('#restaurant-details').hide();
 	}
-	$('#restaurant').hide();
+	
 }
 
 function ordersClicked() {
 	$('#search-result').hide();
 	$('#details').hide();
+	$('#restaurant-details').hide();
 	$('#complaints').hide();
 	$('#restaurant').hide();
 	initiate();
@@ -44,6 +48,7 @@ function ordersClicked() {
 function complaintsClicked() {
 	$('#search-result').hide();
 	$('#details').hide();
+	$('#restaurant-details').hide();
 	$('#restaurant').hide();
 	$('#orders').hide();
 	$('#complaints').show();
@@ -53,6 +58,7 @@ function search() {
 	var text = $('#searchtext').val();
 	if(text != '' && text != ' ') {
 		$('#orders').hide();
+		$('#restaurant-details').hide();
 		$('#restaurant').hide();
 		$('#complaints').hide();
 		$('#details').hide();
@@ -67,7 +73,7 @@ function search() {
 			}else{
 				//$('#search-result').append("<p>"+data+"</p>");
 				for(var i=0; i<data.length; i++) {
-					var content = '<div class="col-sm-3"><div class="card" style="width: 18rem;"><img class="card-img-top" src="..." alt="Card image cap"><div class="card-body"><h5 class="card-title">'+data[i][1]+'</h5><p class="card-text">'+data[i][2]+'</p><a href="#" onclick="checkRestaurant('+data[i][0]+')" class="btn btn-warning">Check</a></div></div></div>';
+					var content = '<div class="col-sm-3"><div class="card" style="width: 18rem;"><img class="card-img-top" src="uploads/photos/restaurant/profile/'+data[i][6]+'" alt="Card image cap"><div class="card-body"><h5 class="card-title">'+data[i][1]+'</h5><p class="card-text">'+data[i][2]+'</p><a href="#" onclick="checkRestaurant('+data[i][0]+')" class="btn btn-warning">Menu</a><a href="#" onclick="viewRestaurant('+data[i][0]+')" class="btn btn-success">View</a></div></div></div>';
 					$('#row').append(content);
 				}				
 			}
@@ -76,10 +82,61 @@ function search() {
 	return false;
 }
 
+function viewRestaurant(rest_id) {
+	$('#spinner').show();
+	$('#orders').hide();
+	$('#complaints').hide();
+	$('#details').hide();
+	$('#search-result').hide();
+	$.ajax({url:"accounts.php?type=restaurant&id="+rest_id, complete:function(data){
+		console.log("Go response");
+		$('#spinner').hide();
+		$('#profile-container').empty();
+		$('#restaurant-details').show();
+		data = JSON.parse(data.responseText)[0];
+		$('#profile-container').append('<a href="/orbs/uploads/photos/restaurant/profile/'+data.photo+'" ><img class="profile-pic" src="/orbs/uploads/photos/restaurant/profile/'+data.photo+'" width="100%" alt="Profile picture"></img></a>');
+        $('#profile-container').append("<h5>ID : "+data.id+"<h5>");
+        $('#profile-container').append("<h5>Name : "+data.name+"<h5>");
+        $('#profile-container').append("<h5>Address : <a href='"+data.location_link+"'>"+data.address+"</a><h5>");
+        $('#profile-container').append("<h5>Email : "+data.email+"<h5>");
+        $('#profile-container').append("<h5>Mobile number : "+data.phon_no+"<h5>");
+        $('#profile-container').append("<h5>Joined on : "+data.created+"<h5>");
+
+		$('#profile-container').append("<hr><h3>Reviews</h3>");
+		$('#profile-container').append("<form onsubmit='return submitReview("+data.id+")'><input type='text' id='reviewtext' name='reviewtext' placeholder='Review'><input type='submit' name='submir-button' value='submit'></form>");
+		$.ajax({url:"review.php?type=fetch&rest_id="+data.id, complete:(data2)=>{
+			console.log("data 2"+data2);
+			if(data2.status == 204)
+				$('#profile-container').append("<h5>No reviews</h5>");
+			else {
+
+				$('#profile-container').append("<div id='review-container'></div>");
+				for(var i=0; i<data2.responseJSON.length; i++) {
+					var cust_id = data2.responseJSON[i].cust_id;
+					//var text = data2.responseJSON[i].text;
+					var counter = 0;
+					$.ajax({url:"/orbs/accounts.php?type=customer&id="+cust_id, complete:(data3)=>{
+						//console.log("Data3:");
+						//console.log(JSON.parse(data3.responseText)[0]);
+						data3 = JSON.parse(data3.responseText)[0];
+						$('#review-container').append('<hr><img class="review-photo" width="50px" src="/orbs/uploads/photos/customer/profile/'+data3.profile_photo+'"></img>');
+						$('#review-container').append("<span class='review-name'>"+data3.name+"</span>");
+						//console.log(data2);
+						$('#review-container').append("<p class='review-text'>"+data2.responseJSON[counter].text+"</p>");
+						counter++;
+					}});
+					
+				}
+			}
+		}});
+	}});
+}
+
 function checkRestaurant(rest_id) {
 	$('#spinner').show();
 	$('#orders').hide();
 	$('#complaints').hide();
+	$('#restaurant-details').hide();
 	$('#details').hide();
 	$('#search-result').hide();
 	$.get("menu.php?restid="+rest_id, function(data, status){
@@ -108,11 +165,13 @@ function back() {
 	$('#details').hide();
 	$('#back').hide();
 	$('#complaints').hide();
+	$('#restaurant-details').hide();
 	$('#search-result').show();
 }
 
 function backfromdetails() {
 	$('#restaurant').hide();
+	$('#restaurant-details').hide();
 	$('#details').hide();
 	$('#complaints').hide();
 	$('#back').hide();
@@ -250,6 +309,20 @@ function complaints() {
 			else
 				alert("Complaint is not submitted");
 		} });
+	}
+	return false;
+}
+
+function submitReview(rest_id) {
+	var txt = $('#reviewtext').val();
+	if(txt == '')
+		return false;
+	else if(txt == ' ')
+		return false;
+	else{
+		$.ajax({url:"/orbs/review.php?type=post&rest_id="+rest_id, type:"post", data:txt, complete:function(){
+			viewRestaurant(rest_id);
+		}});
 	}
 	return false;
 }

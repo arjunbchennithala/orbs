@@ -7,7 +7,7 @@ if(isset($_SESSION['userid'])) {
     $q = mysqli_real_escape_string($conn, $_GET['query']);
 
     if($type == 'restaurant') {
-        $query = "select id, name, address, location_link, email, phon_no, rating from restaurant where LOCATE('$q', address) > 0 OR LOCATE('$q', name) > 0";
+        $query = "select id, name, address, location_link, email, phon_no, photo, rating from restaurant where ((LOCATE('$q', address) > 0) OR (LOCATE('$q', name) > 0)) AND active=1";
         $res = mysqli_query($conn, $query);
         if(mysqli_num_rows($res)>0) {
             $restaurants = mysqli_fetch_all($res);

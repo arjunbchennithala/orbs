@@ -63,7 +63,9 @@ if(!isset($_SESSION['admin'])){
 </div>
 
 <div class="tabs" id="restaurants" style="display: none;"></div>
-<div class="tabs" id="restaurant-details" style="display: none;"></div>
+<div class="tabs" id="restaurant-details" style="display: none;">
+   <!-- <a href="/orbs/uploads/photos/restaurant/profile/1661018616eflags.png" ><img class="profile-pic" src="/orbs/uploads/photos/restaurant/profile/1661018616eflags.png" width="200px" alt="Profile picture"></img></a> --->
+</div>
 
 <div class="tabs" id="customers" style="display: none;"></div>
 

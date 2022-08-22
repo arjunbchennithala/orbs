@@ -166,7 +166,16 @@ function restaurantActivate(rest_id) {
 function restaurantDetails(rest_id) {
     $(".tabs").hide();
     $("#restaurant-details").show();
+    $("#restaurant-details").empty();
     $.ajax({url:"/orbs/fetch.php?type=restaurants&skip=0&id="+rest_id, type:"get", complete:function(data){
-        $("#restaurant-details").append("<p>"+data.responseJSON+"</p>");
+        console.log(data.responseJSON);
+        $('#restaurant-details').append("<h3>Profile</h3><button class='btn btn-dark' onclick='restaurantsClicked()'>Back</button><hr>");
+        $('#restaurant-details').append('<a href="/orbs/uploads/photos/restaurant/profile/'+data.responseJSON[0][8]+'" ><img class="profile-pic" src="/orbs/uploads/photos/restaurant/profile/'+data.responseJSON[0][8]+'" width="100%" alt="Profile picture"></img></a>');
+        $('#restaurant-details').append("<h5>ID : "+data.responseJSON[0][0]+"<h5>");
+        $('#restaurant-details').append("<h5>Name : "+data.responseJSON[0][1]+"<h5>");
+        $('#restaurant-details').append("<h5>Address : <a href='"+data.responseJSON[0][3]+"'>"+data.responseJSON[0][2]+"</a><h5>");
+        $('#restaurant-details').append("<h5>Email : "+data.responseJSON[0][4]+"<h5>");
+        $('#restaurant-details').append("<h5>Mobile number : "+data.responseJSON[0][5]+"<h5>");
+        $('#restaurant-details').append("<h5>Joined on : "+data.responseJSON[0][6]+"<h5>");
     }});
 }

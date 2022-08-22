@@ -20,6 +20,7 @@ function requestsClicked() {
     $('#orders').hide();
     $('#complaints').hide();
     $('#menu').hide();
+    $('#reviews').hide();
     $('#menuAdd').hide();
     $('#menuEdit').hide();
     $('#back').hide();
@@ -43,6 +44,7 @@ function ordersClicked() {
     $('#requests').hide();
     $('#complaints').hide();
     $('#menu').hide();
+    $('#reviews').hide();
     $('#menuEdit').hide();
     $('#back').hide();
     $('#menuAdd').hide();
@@ -51,6 +53,7 @@ function ordersClicked() {
 
 function complaintsClicked() {
     $('#requests').hide();
+    $('#reviews').hide();
     $('#menu').hide();
     $('#menuEdit').hide();
     $('#orders').hide();
@@ -64,6 +67,7 @@ function menuClicked() {
     $('#orders').hide();
     $('#complaints').hide();
     $('#menuAdd').hide();
+    $('#reviews').hide();
     $('#menuEdit').hide();
     $('#back').hide();
     $('#spinner').show();
@@ -124,6 +128,7 @@ function unhideMenu(menu_id) {
 function addMenu() {
     $('#requests').hide();
     $('#orders').hide();
+    $('#reviews').hide();
 
     $('#menuEdit').hide();
     $('#menu').hide();
@@ -158,6 +163,7 @@ function clickedBack() {
 var menuValues;
 function clickedMenuEdit(menu_id) {
     $('#menu').hide();
+    $('#reviews').hide();
     $('#back').show();
     $('#menuEdit').show();
     $.get("menu.php?type=fetch&menu_id="+menu_id, function(data, status){
@@ -201,6 +207,7 @@ function orderDetails(order_id) {
     $.ajax({url:"order.php?action=orderedmenu&order_id="+order_id, complete:function(data, status){
 		$('#spinner').hide();
 		$('#orders').hide();
+        $('#reviews').hide();
         $('#requests').hide();
 		$('#details').show();
 		$('#backfromdetailsorders').show();
@@ -218,6 +225,7 @@ function requestDetails(order_id) {
 		$('#spinner').hide();
 		$('#orders').hide();
         $('#requests').hide();
+        $('#reviews').hide();
 		$('#details').show();
 		$('#backfromdetailsrequests').show();
 		$('#details').empty();
@@ -256,4 +264,43 @@ function complaints() {
 		} });
 	}
 	return false;
+}
+
+function reviewsClicked() {
+    $('#spinner').show();
+    $('#requests').hide();
+    $('#menu').hide();
+    $('#menuEdit').hide();
+    $('#orders').hide();
+    $('#back').hide();
+    $('#menuAdd').hide();
+    $('#complaints').hide();
+    $('#reviews').show();
+
+    $('#reviews-container').empty();
+    $.ajax({url:"review.php?type=fetchself", complete:(data2)=>{
+        $('#spinner').hide();
+        if(data2.status == 204)
+            $('#reviews-container').append("<h5>No reviews</h5>");
+        else {
+
+            $('#reviews-container').append("<div id='review-container'></div>");
+            for(var i=0; i<data2.responseJSON.length; i++) {
+                var cust_id = data2.responseJSON[i].cust_id;
+                //var text = data2.responseJSON[i].text;
+                var counter = 0;
+                $.ajax({url:"/orbs/accounts.php?type=customer&id="+cust_id, complete:(data3)=>{
+                    //console.log("Data3:");
+                    //console.log(JSON.parse(data3.responseText)[0]);
+                    data3 = JSON.parse(data3.responseText)[0];
+                    $('#review-container').append('<hr><img class="review-photo" width="50px" src="/orbs/uploads/photos/customer/profile/'+data3.profile_photo+'"></img>');
+                    $('#review-container').append("<span class='review-name'>"+data3.name+"</span>");
+                    //console.log(data2);
+                    $('#review-container').append("<p class='review-text'>"+data2.responseJSON[counter].text+"</p>");
+                    counter++;
+                }});
+                
+            }
+        }
+    }});
 }
