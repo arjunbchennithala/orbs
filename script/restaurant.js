@@ -75,7 +75,7 @@ function menuClicked() {
     $.ajax({url:"menu.php?type=fetch", success:function(data, status){
         $('#spinner').hide();
         $('#menu-display').empty();
-        $('#menu-display').append("<table class='table table-striped'><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Price</th><th>State</th><th>Action</th></tr></thead><tbody id='menu-table' ></tbody></table>")
+        $('#menu-display').append("<table class='table table-striped'><thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Description</th><th>Price</th><th>State</th><th>Action</th></tr></thead><tbody id='menu-table' ></tbody></table>")
         for(var i=0; i<data.length; i++) {
             if(data[i][6] == 'available') {
                 $action = "hideMenu(" + data[i][0] +")";
@@ -86,7 +86,7 @@ function menuClicked() {
                 $actionString = "Show";
                 $buttonClass = "btn btn-success";
             }
-            $('#menu-table').append("<tr><td>"+(i+1)+"</td><td>"+data[i][2]+"</td><td>"+data[i][4]+"</td><td>"+data[i][5]+"</td><td>"+data[i][6]+"</td><td><button class='"+$buttonClass+"' onclick='"+$action+"'>"+$actionString+"</button><button class='btn btn-warning' onclick='clickedMenuEdit("+data[i][0]+")'>Edit</button></td></tr>")
+            $('#menu-table').append("<tr><td>"+(i+1)+"</td><td><img src='/orbs/uploads/photos/restaurant/menu/"+data[i][3]+"' height='100px'></img></td><td>"+data[i][2]+"</td><td>"+data[i][4]+"</td><td>"+data[i][5]+"</td><td>"+data[i][6]+"</td><td><button class='"+$buttonClass+"' onclick='"+$action+"'>"+$actionString+"</button><button class='btn btn-warning' onclick='clickedMenuEdit("+data[i][0]+")'>Edit</button></td></tr>")
         }
     }, error:function(){
         $('#spinner').hide();
@@ -137,7 +137,7 @@ function addMenu() {
     
 }
 
-function validateMenu() {
+function validateMenu(fm) {
     var name = $('#name').val();
     var description = $('#description').val();
     var price = $('#price').val();
@@ -148,7 +148,9 @@ function validateMenu() {
             "description":description,
             "price":parseInt(price)
         };
-        $.ajax({url:"menu.php?type=add", method:"post", data:JSON.stringify(req), statusCode:{500:function(){
+        //const det = $('#menudetails-add');
+        const frm = new FormData(fm);
+        $.ajax({url:"menu.php?type=add", method:"post", contentType: false,cache: false,processData:false, data:frm/*JSON.stringify(req)*/, statusCode:{500:function(){
             alert("Not created");
         }, 201: function() {
             menuClicked();
@@ -212,9 +214,9 @@ function orderDetails(order_id) {
 		$('#details').show();
 		$('#backfromdetailsorders').show();
 		$('#details').empty();
-		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
+		$('#details').append("<table class='table'><thead><th>#</th><th>Photo</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td><img src='/orbs/uploads/photos/restaurant/menu/"+data.responseJSON[i][0][3]+"' height='100px'></img></td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }
@@ -229,9 +231,9 @@ function requestDetails(order_id) {
 		$('#details').show();
 		$('#backfromdetailsrequests').show();
 		$('#details').empty();
-		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
+		$('#details').append("<table class='table'><thead><th>#</th><th>Photo</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td><img src='/orbs/uploads/photos/restaurant/menu/"+data.responseJSON[i][0][3]+"' height='100px'></img></td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }

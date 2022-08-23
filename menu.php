@@ -45,6 +45,7 @@ if(isset($_SESSION['userid'])) {
         }else if($type == 'edit') {
             $newValue = file_get_contents('php://input'); 
             $newValue = json_decode($newValue, true); 
+            //$newValue = $_POST;
 
             $menu_id = mysqli_real_escape_string($conn, $_GET['menuid']);
             if($newValue['name'] != "") {
@@ -63,14 +64,26 @@ if(isset($_SESSION['userid'])) {
                 mysqli_query($conn, $query);
             }
         }else if($type == 'add'){
+            /*
             $menu = file_get_contents("php://input");
             $menu = json_decode($menu);
             $name = $menu->name;
             $description = $menu->description;
             $price = $menu->price;
+            */
+
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $price = $_POST['price'];
             $rest_id = $_SESSION['userid'];
-            $query = "insert into menu(rest_id, name, description, price, state)";
-            $query .= " values($rest_id, '$name', '$description', $price, 'available')";
+            $photo = time().$_FILES['photo']['name'];
+            $folder = "uploads/photos/restaurant/menu/".$photo;
+            if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder)){
+                http_response_code(500);
+                exit();
+            }
+            $query = "insert into menu(rest_id, name, description, price, state, photo)";
+            $query .= " values($rest_id, '$name', '$description', $price, 'available', '$photo')";
             if(mysqli_query($conn, $query)) {
                 http_response_code(201);
             }else{

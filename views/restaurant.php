@@ -16,7 +16,6 @@
             Account
           </a>
           <ul class="dropdown-menu">
-            <li><?php echo "  Userid:".$_SESSION['userid'];?></li>
             <hr>
             <li><a class="dropdown-item" href="logout">Logout</a></li>
           </ul>
@@ -63,7 +62,7 @@
             <div class="content">
                 <h3>Add Menu</h3>
                 <hr>
-                <form onsubmit="return validateMenu()">
+                <form onsubmit="return validateMenu(this)" id="menudetails-add" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name">
@@ -75,6 +74,11 @@
                     <div class="form-group">
                         Price in Rs:
                         <input type="number" min="0" class="form-control" id="price" name="price">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        Picture:
+                        <input type="file" class="form-control" id="phot" accept="image/*" name="photo">
                     </div>
                     <br>
                     <button type="submit" class="btn btn-warning" name="submit-button">Add</button>

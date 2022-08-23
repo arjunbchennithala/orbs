@@ -25,7 +25,6 @@
             Account
           </a>
           <ul class="dropdown-menu">
-            <li><?php echo "  Userid:".$_SESSION['userid'];?></li>
             <hr>
             <li><a class="dropdown-item" href="logout">Logout</a></li>
           </ul>
