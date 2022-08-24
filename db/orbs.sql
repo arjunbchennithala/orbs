@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 23, 2022 at 03:02 AM
+-- Generation Time: Aug 25, 2022 at 02:53 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -71,7 +71,7 @@ CREATE TABLE `customer` (
   `state` varchar(20) NOT NULL,
   `question` varchar(100) NOT NULL,
   `answer` varchar(100) NOT NULL,
-  `profile_photo` varchar(20) DEFAULT NULL,
+  `profile_photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `created` date NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -136,7 +136,7 @@ CREATE TABLE `restaurant` (
   `location_link` varchar(100) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
   `phon_no` varchar(15) DEFAULT NULL,
-  `photo` varchar(20) DEFAULT NULL,
+  `photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `question` varchar(100) NOT NULL,
   `answer` varchar(100) NOT NULL,
   `password` varchar(255) DEFAULT NULL,

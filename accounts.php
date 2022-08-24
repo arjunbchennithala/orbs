@@ -2,14 +2,15 @@
 
 session_start();
 include("db/connect.php");
+header("Content-Type: application/json");
 if((!isset($_SESSION['admin'])) && (!isset($_SESSION['userid'])))
 {
     if($_GET['type'] == 'fetch') {
         $email = mysqli_real_escape_string($conn, $_GET['email']);
         if($_GET['user-type'] == 'restaurant')
-            $query = "select question from restaurant where email=$email";
+            $query = "select question from restaurant where email='$email'";
         else if($_GET['user-type'] == 'customer')
-            $query = "select question from customer where email=$email";
+            $query = "select question from customer where email='$email'";
         $question = mysqli_query($conn, $query);
         if(mysqli_num_rows($question)>0) {
             $question = mysqli_fetch_assoc($question);
@@ -58,5 +59,4 @@ if((!isset($_SESSION['admin'])) && (!isset($_SESSION['userid'])))
         }
     }
 }
-
 ?>

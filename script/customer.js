@@ -2,6 +2,7 @@ function initiate() {
 	$('#spinner').show();
     $.get("order.php?action=fetch", function(data, status){
 		$('#spinner').hide();
+		$('#back').hide();
 		$('#restaurant-details').hide();
 		$('#complaints').hide();
 		$('#content').empty();
@@ -27,6 +28,7 @@ function homeClicked() {
 	if($('#search-result').children().length>0) {
 		$('#orders').hide();
 		$('#details').hide();
+		$('#back').hide();
 		$('#complaints').hide();
 		$('#search-result').show();
 		$('#restaurant').hide();
@@ -38,6 +40,7 @@ function homeClicked() {
 function ordersClicked() {
 	$('#search-result').hide();
 	$('#details').hide();
+	$('#back').hide();
 	$('#restaurant-details').hide();
 	$('#complaints').hide();
 	$('#restaurant').hide();
@@ -48,6 +51,7 @@ function ordersClicked() {
 function complaintsClicked() {
 	$('#search-result').hide();
 	$('#details').hide();
+	$('#back').hide();
 	$('#restaurant-details').hide();
 	$('#restaurant').hide();
 	$('#orders').hide();
@@ -61,6 +65,7 @@ function search() {
 		$('#restaurant-details').hide();
 		$('#restaurant').hide();
 		$('#complaints').hide();
+		$('#back').hide();
 		$('#details').hide();
 		$('#spinner').show();
 		$.get("search.php?type=restaurant&query="+text, function(data, status){
@@ -136,6 +141,7 @@ function checkRestaurant(rest_id) {
 	$('#spinner').show();
 	$('#orders').hide();
 	$('#complaints').hide();
+	$('#back').hide();
 	$('#restaurant-details').hide();
 	$('#details').hide();
 	$('#search-result').hide();
@@ -288,14 +294,15 @@ function orderDetails(order_id) {
 		$('#details').show();
 		$('#back').show();
 		$('#details').empty();
-		$('#details').append("<table class='table'><thead><th>#</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
+		$('#details').append("<table class='table'><thead><th>#</th><th>Photo</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
 		for(var i=0; i<data.responseJSON.length; i++){
-			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
+			$('#table-bodyy').append("<tr><td>"+(i+1)+"</td><td><img src='/orbs/uploads/photos/restaurant/menu/"+data.responseJSON[i][0][3]+"' height='100px'></img></td><td>"+data.responseJSON[i][0][2]+"</td><td>"+data.responseJSON[i][0][4]+"</td><td>"+data.responseJSON[i][0][7]+"</td></tr>")
 		}
 	}});
 }
 
 function complaints() {
+	$('#back').hide();
 	var text = $('#complaint').val();
 	$('#complaint').val("");
 	if(text != "") {

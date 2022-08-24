@@ -38,6 +38,10 @@ if(isset($_SESSION['userid'])) {
                     echo "<p>Successfully registered, Login Now</p>";
                 }else if($_GET['status']=='failed'){
                     echo "<p>Failed to Login</p>";
+                }else if($_GET['status'] == 'resetfailed') {
+                    echo "<p>Failed to reset password</p>";
+                }else if($_GET['status'] == 'resetsuccess') {
+                    echo "<p>Password successfully reset, Login Now</p>";
                 }
             }
         ?>

@@ -3,6 +3,7 @@ function initiate() {
     $.get("order.php?filter=accepted", function(data, status){
         $('#spinner').hide();
         $('#orders').show();
+        $('#details').hide();
         $('#orders').empty();
         if(status == "nocontent")
             $('#orders').append('<h3>Orders</h3><hr><p>No orders</p>');
@@ -22,6 +23,9 @@ function requestsClicked() {
     $('#menu').hide();
     $('#reviews').hide();
     $('#menuAdd').hide();
+    $('#details').hide();
+    $('#backfromdetailsorders').hide();
+	$('#backfromdetailsrequests').hide();
     $('#menuEdit').hide();
     $('#back').hide();
     $('#spinner').show();
@@ -42,6 +46,9 @@ function requestsClicked() {
 
 function ordersClicked() {
     $('#requests').hide();
+    $('#details').hide();
+    $('#backfromdetailsorders').hide();
+	$('#backfromdetailsrequests').hide();
     $('#complaints').hide();
     $('#menu').hide();
     $('#reviews').hide();
@@ -54,6 +61,9 @@ function ordersClicked() {
 function complaintsClicked() {
     $('#requests').hide();
     $('#reviews').hide();
+    $('#details').hide();
+    $('#backfromdetailsorders').hide();
+	$('#backfromdetailsrequests').hide();
     $('#menu').hide();
     $('#menuEdit').hide();
     $('#orders').hide();
@@ -66,6 +76,9 @@ function menuClicked() {
     $('#requests').hide();
     $('#orders').hide();
     $('#complaints').hide();
+    $('#details').hide();
+    $('#backfromdetailsorders').hide();
+	$('#backfromdetailsrequests').hide();
     $('#menuAdd').hide();
     $('#reviews').hide();
     $('#menuEdit').hide();
@@ -129,7 +142,7 @@ function addMenu() {
     $('#requests').hide();
     $('#orders').hide();
     $('#reviews').hide();
-
+    $('#details').hide();
     $('#menuEdit').hide();
     $('#menu').hide();
     $('#menuAdd').show();
@@ -211,6 +224,7 @@ function orderDetails(order_id) {
 		$('#orders').hide();
         $('#reviews').hide();
         $('#requests').hide();
+        $('#backfromdetailsrequests').hide();
 		$('#details').show();
 		$('#backfromdetailsorders').show();
 		$('#details').empty();
@@ -229,6 +243,7 @@ function requestDetails(order_id) {
         $('#requests').hide();
         $('#reviews').hide();
 		$('#details').show();
+        $('#backfromdetailsorders').hide();
 		$('#backfromdetailsrequests').show();
 		$('#details').empty();
 		$('#details').append("<table class='table'><thead><th>#</th><th>Photo</th><th>Name</th><th>Description</th><th>Quanity</th></thead><tbody id='table-bodyy'></tbody></table>");
@@ -273,6 +288,9 @@ function reviewsClicked() {
     $('#requests').hide();
     $('#menu').hide();
     $('#menuEdit').hide();
+    $('#details').hide();
+    $('#backfromdetailsorders').hide();
+	$('#backfromdetailsrequests').hide();
     $('#orders').hide();
     $('#back').hide();
     $('#menuAdd').hide();

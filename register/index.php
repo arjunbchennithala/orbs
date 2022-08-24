@@ -161,9 +161,13 @@ else if(!isset($_POST['submit-button'])) {
 }
 else{
     if($_POST['account-type'] == 'customer') {
+        echo $_FILES['photo']['name'];
         $file_name = time().$_FILES['photo']['name'];
+        echo $file_name . "<br>";
+        echo $_FILES['photo']['tmp_name'];
+        $temp_name = $_FILES['photo']['tmp_name'];
         $folder = "../uploads/photos/customer/profile/$file_name";
-        if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder))
+        if(!move_uploaded_file($temp_name, $folder))
             goto ex;
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
@@ -171,16 +175,20 @@ else{
         $password = hash('md5', $_POST['password']);
         $mobile_number = mysqli_real_escape_string($conn, $_POST['mobile_number']);
         $state = mysqli_real_escape_string($conn, $_POST['state']);
-        $question = mysqli_real_escape_string($conn, strtolower($_POST['question']));
+        $question = mysqli_real_escape_string($conn, $_POST['question']);
         $answer = hash('md5', strtolower($_POST['answer']));
         $date = date('y-m-d');
         $query = "insert into customer(profile_photo, name, dob, email, password, mobile_number, state, created, question, answer)";
         $query .= " values('$file_name', '$name', '$dob', '$email', '$password', '$mobile_number', '$state', '$date', '$question', '$answer')";
        
     } else if($_POST['account-type'] == 'restaurant') {
+        echo $_FILES['photo']['name'];
         $file_name = time().$_FILES['photo']['name'];
+        echo $file_name . "<br>";
+        echo $_FILES['photo']['tmp_name'];
+        $temp_name = $_FILES['photo']['tmp_name'];
         $folder = "../uploads/photos/restaurant/profile/$file_name";
-        if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder))
+        if(!move_uploaded_file($temp_name, $folder))
             goto ex;
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $address = mysqli_real_escape_string($conn, $_POST['address']);
@@ -199,10 +207,12 @@ else{
     $res = mysqli_query($conn, $query);
 ex:
     if($res) {
-        header("Location: /orbs/login?status=success");
+        echo "Success";
+        //header("Location: /orbs/login?status=success");
         
     }else {
-        header("Location: /orbs/register?status=failed");
+        echo "Failed";
+        //header("Location: /orbs/register?status=failed");
         
     }
 }
