@@ -207,12 +207,10 @@ else{
     $res = mysqli_query($conn, $query);
 ex:
     if($res) {
-        echo "Success";
-        //header("Location: /orbs/login?status=success");
+        header("Location: /orbs/login?status=success");
         
     }else {
-        echo "Failed";
-        //header("Location: /orbs/register?status=failed");
+        header("Location: /orbs/register?status=failed");
         
     }
 }
