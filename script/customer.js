@@ -152,10 +152,10 @@ function checkRestaurant(rest_id) {
 		if(status == "nocontent") {
 			$('#menu-container').append("<p>No menu available</p>");
 		}else{
-			var content = '<thead><tr><th>#</th><th>Name</th><th>Description</th><th>Price</th><th>Count</th></tr></thead><tbody id="menu-tb"></tbody>';
+			var content = '<thead><tr><th>#</th><th>Name</th><th>Photo</th><th>Description</th><th>Price</th><th>Count</th></tr></thead><tbody id="menu-tb"></tbody>';
 			$('#menu-container').append(content);
 			for(var i=0; i<data.length; i++) {
-				var content = '<tr><td>'+(i+1)+'</td><td>'+data[i][2]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td><input type="number" onchange="changeCount()" min="0" id="'+data[i][0]+'-'+data[i][5]+'" style="width:100px" class="form-control count" placeholder="Count"></td></tr>';
+				var content = '<tr><td>'+(i+1)+'</td><td>'+data[i][2]+'</td><td><img src="/orbs/uploads/photos/restaurant/menu/'+data[i][3]+'" width="100px"></img></td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td><input type="number" onchange="changeCount()" min="0" id="'+data[i][0]+'-'+data[i][5]+'" style="width:100px" class="form-control count" placeholder="Count"></td></tr>';
 				$('#menu-tb').append(content);
 			}
 			var content = 'No of seats you need<input type="number" min="0" style="width:200px" class="form-control" id="no-of-seats" value="1" placeholder="No of Seats"><br>Date for the event<input class="form-control" type="date" id="date"><br>Time for the event<input class="form-control" type="time" id="time"><div id="price-print"></div>';
@@ -191,11 +191,11 @@ function placeOrder(rest_id) {
 	const count = [];
 	var seats;
 	for(var i=0; i<children.length; i++) {
-		var id = children[i].children[4].firstChild.id;
+		var id = children[i].children[5].firstChild.id;
 		var splitted = id.split('-');
 		item[i] = parseInt(splitted[0]);
 		price[i] = parseInt(splitted[1]);
-		var val = children[i].children[4].firstChild.value;
+		var val = children[i].children[5].firstChild.value;
 		if( val == '' || val == '0' ){
 			count[i] = 0;
 		}else{
@@ -247,10 +247,10 @@ function changeCount() {
 	const count = [];
 	var seats;
 	for(var i=0; i<children.length; i++) {
-		var id = children[i].children[4].firstChild.id;
+		var id = children[i].children[5].firstChild.id;
 		var splitted = id.split('-');
 		price[i] = parseInt(splitted[1]);
-		var val = children[i].children[4].firstChild.value;
+		var val = children[i].children[5].firstChild.value;
 		if( val == '' || val == '0' ){
 			count[i] = 0;
 		}else{

@@ -162,7 +162,8 @@ else if(!isset($_POST['submit-button'])) {
 else{
     if($_POST['account-type'] == 'customer') {
         echo $_FILES['photo']['name'];
-        $file_name = time().$_FILES['photo']['name'];
+        //$file_name = time().$_FILES['photo']['name'];
+        $file_name = time() . "." . pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
         echo $file_name . "<br>";
         echo $_FILES['photo']['tmp_name'];
         $temp_name = $_FILES['photo']['tmp_name'];
@@ -183,7 +184,8 @@ else{
        
     } else if($_POST['account-type'] == 'restaurant') {
         echo $_FILES['photo']['name'];
-        $file_name = time().$_FILES['photo']['name'];
+        //$file_name = time().$_FILES['photo']['name'];
+        $file_name = time() . "." . pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
         echo $file_name . "<br>";
         echo $_FILES['photo']['tmp_name'];
         $temp_name = $_FILES['photo']['tmp_name'];

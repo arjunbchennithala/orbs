@@ -76,7 +76,8 @@ if(isset($_SESSION['userid'])) {
             $description = $_POST['description'];
             $price = $_POST['price'];
             $rest_id = $_SESSION['userid'];
-            $photo = time().$_FILES['photo']['name'];
+            //$photo = time(). "." . $_FILES['photo']['name'];
+            $photo = time() . "." . pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
             $folder = "uploads/photos/restaurant/menu/".$photo;
             if(!move_uploaded_file($_FILES['photo']['tmp_name'], $folder)){
                 http_response_code(500);
